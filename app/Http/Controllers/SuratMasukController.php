@@ -29,8 +29,7 @@ class SuratMasukController extends Controller
 
     $fileName = time() . '_sekret_' . $request->file('file_surat')->getClientOriginalName();
     
-    // --- PERBAIKAN UNTUK HOSTING ---
-    // Deteksi apakah hosting menggunakan folder 'public_html' alih-alih 'public'
+
     $targetPath = base_path('public_html/uploads/surat_masuk');
     if (!file_exists($targetPath)) {
         $targetPath = public_path('uploads/surat_masuk');
