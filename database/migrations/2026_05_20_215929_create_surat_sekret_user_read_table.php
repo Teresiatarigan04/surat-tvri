@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('surat_sekret_user_read', function (Blueprint $table) {
             $table->id();
             // Sesuaikan nama field 'surat_sekret_id' dengan primary key tabel SuratSekret Anda
-            $table->foreignId('surat_sekret_id')->constrained('surat_sekret')->onDelete('cascade');
+            $table->foreignId('surat_sekret_id')->constrained('surat_sekrets')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
             
