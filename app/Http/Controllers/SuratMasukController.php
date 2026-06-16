@@ -16,36 +16,45 @@ class SuratMasukController extends Controller
         return view('adminsekret.surat_masuk', compact('surat'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'no_surat'      => 'required|unique:surat_masuk,no_surat',
-            'pengirim'      => 'required',
-            'perihal'       => 'required',
-            'tanggal_surat' => 'required|date',
-            'file_surat'    => 'required|mimes:pdf,doc,docx|max:5120',
-            'sifat'         => 'required|in:penting,segera,rahasia',
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'no_surat'      => 'required|unique:surat_masuk,no_surat',
+        'pengirim'      => 'required',
+        'perihal'       => 'required',
+        'tanggal_surat' => 'required|date',
+        'file_surat'    => 'required|mimes:pdf,doc,docx|max:5120',
+        'sifat'         => 'required|in:penting,segera,rahasia',
+    ]);
 
-        $fileName = time() . '_sekret_' . $request->file('file_surat')->getClientOriginalName();
-        $request->file('file_surat')->move(public_path('uploads/surat_masuk'), $fileName);
-
-        SuratMasuk::create([
-            'id_admin'      => Auth::id(),
-            'no_surat'      => trim($request->no_surat),
-            'pengirim'      => trim($request->pengirim),
-            'perihal'       => trim($request->perihal),
-            'tanggal_surat' => $request->tanggal_surat,
-            'sifat'         => $request->sifat,
-            'file_surat'    => $fileName,
-            'status'        => 'pending',
-        ]);
-
-        $this->logAction('Menambahkan surat masuk baru nomor: ' . $request->no_surat);
-
-        return redirect()->back()->with('success', 'Arsip surat berhasil ditambahkan!');
+    $fileName = time() . '_sekret_' . $request->file('file_surat')->getClientOriginalName();
+    
+    // --- PERBAIKAN UNTUK HOSTING ---
+    // Deteksi apakah hosting menggunakan folder 'public_html' alih-alih 'public'
+    $targetPath = base_path('public_html/uploads/surat_masuk');
+    if (!file_exists($targetPath)) {
+        $targetPath = public_path('uploads/surat_masuk');
     }
+    
+    // Pindahkan file ke target path yang sudah benar
+    $request->file('file_surat')->move($targetPath, $fileName);
+    // -------------------------------
 
+    SuratMasuk::create([
+        'id_admin'      => Auth::id(),
+        'no_surat'      => trim($request->no_surat),
+        'pengirim'      => trim($request->pengirim),
+        'perihal'       => trim($request->perihal),
+        'tanggal_surat' => $request->tanggal_surat,
+        'sifat'         => $request->sifat,
+        'file_surat'    => $fileName,
+        'status'        => 'pending',
+    ]);
+
+    $this->logAction('Menambahkan surat masuk baru nomor: ' . $request->no_surat);
+
+    return redirect()->back()->with('success', 'Arsip surat berhasil ditambahkan!');
+}
     // Tambahkan fungsi ini di dalam SuratMasukController.php
 
     public function markAsRead($id)
