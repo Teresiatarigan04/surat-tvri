@@ -373,47 +373,44 @@
             </header>
 
             <!-- Page Content -->
-            <div class="p-4 lg:p-10 max-w-[1400px] mx-auto space-y-8">
-                <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+            <div class="p-4 lg:p-8 max-w-[1400px] mx-auto space-y-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
 
-                    <!-- Section Kiri: List Surat -->
-                    <div class="xl:col-span-8 space-y-8">
+                    <div class="lg:col-span-7 xl:col-span-8 space-y-6 md:space-y-8 w-full">
 
-                        <!-- Hero Stat Card -->
-                        <div class="relative overflow-hidden rounded-[3rem] bg-white border border-slate-200 p-8 shadow-xl shadow-slate-200/50 group animate__animated animate__zoomIn">
-                            <div class="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-emerald-500/5 blur-[100px] rounded-full group-hover:bg-emerald-500/10 transition-all duration-1000"></div>
+                        <div class="relative overflow-hidden rounded-3xl md:rounded-[3rem] bg-white border border-slate-200 p-5 md:p-8 shadow-xl shadow-slate-200/50 group animate__animated animate__zoomIn">
+                            <div class="absolute top-0 right-0 -mt-20 -mr-20 w-64 h-64 md:w-80 md:h-80 bg-emerald-500/5 blur-[100px] rounded-full group-hover:bg-emerald-500/10 transition-all duration-1000"></div>
 
-                            <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
-                                <div class="flex items-center gap-6">
+                            <div class="relative flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                                <div class="flex items-center gap-4 md:gap-6 w-full sm:w-auto">
                                     <div class="relative shrink-0 group-hover:scale-110 transition-transform duration-500">
                                         <div class="absolute inset-0 bg-emerald-500 blur-2xl opacity-10 animate-pulse"></div>
-                                        <div class="relative w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-[2rem] flex items-center justify-center shadow-lg shadow-emerald-500/30 rotate-3 group-hover:rotate-0 transition-all">
-                                            <i class="fa-solid fa-map-location-dot text-white text-3xl"></i>
+                                        <div class="relative w-14 h-14 md:w-20 md:h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl md:rounded-[2rem] flex items-center justify-center shadow-lg shadow-emerald-500/30 rotate-3 group-hover:rotate-0 transition-all">
+                                            <i class="fa-solid fa-map-location-dot text-white text-xl md:text-3xl"></i>
                                         </div>
                                     </div>
-                                    <div>
-                                        <h3 class="text-3xl font-black text-slate-800 tracking-tighter italic uppercase">Monitoring Surat</h3>
-                                        <p class="text-slate-500 text-sm font-medium mt-1 flex items-center gap-2 italic">
-                                            <i class="fa-solid fa-circle-check text-emerald-500"></i>
-                                            Klik kartu untuk melihat riwayat perjalanan surat secara mendalam
+                                    <div class="min-w-0 flex-1">
+                                        <h3 class="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter italic uppercase truncate">Monitoring Surat</h3>
+                                        <p class="text-slate-500 text-xs font-medium mt-1 flex items-center gap-2 italic leading-snug">
+                                            <i class="fa-solid fa-circle-check text-emerald-500 shrink-0"></i>
+                                            <span class="truncate">Klik kartu untuk melihat riwayat mendalam</span>
                                         </p>
                                     </div>
                                 </div>
 
-                                <div class="flex items-center gap-4 bg-slate-50 border border-slate-200 p-3 pr-8 rounded-3xl shadow-inner">
-                                    <div class="w-14 h-14 bg-white border border-slate-100 rounded-2xl flex items-center justify-center text-emerald-600 shadow-sm">
-                                        <i class="fa-solid fa-inbox text-xl"></i>
+                                <div class="flex items-center gap-4 bg-slate-50 border border-slate-200 p-3 pr-6 sm:pr-8 rounded-2xl md:rounded-3xl shadow-inner w-full sm:w-auto shrink-0">
+                                    <div class="w-12 h-12 bg-white border border-slate-100 rounded-xl md:rounded-2xl flex items-center justify-center text-emerald-600 shadow-sm shrink-0">
+                                        <i class="fa-solid fa-inbox text-lg"></i>
                                     </div>
                                     <div>
-                                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Surat Saya</p>
-                                        <p class="text-2xl font-black text-slate-800 leading-none">{{ count($surats) }}</p>
+                                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Surat Saya</p>
+                                        <p class="text-xl md:text-2xl font-black text-slate-800 leading-none">{{ count($surats) }}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- List Section -->
-                        <div class="grid grid-cols-1 gap-5">
+                        <div class="grid grid-cols-1 gap-4 md:gap-5 w-full">
                             @forelse($surats as $s)
                             @php
                             // 1. Ambil data kelompok disposisi berdasarkan surat
@@ -431,86 +428,79 @@
                             return strtolower($item->status) === 'selesai dilaksanakan';
                             })->count();
 
-                            // Hitung yang berstatus 'sudah dibaca' (masih dalam progres review)
+                            // Hitung yang berstatus 'sudah dibaca'
                             $totalDibaca = $group->filter(function($item) {
                             return strtolower($item->status) === 'sudah dibaca';
                             })->count();
 
-                            // 4. Hitung persentase progress bar (Single bar: Hijau untuk Selesai, Amber untuk Progres Membaca)
+                            // 4. Hitung persentase progress bar
                             $widthSelesai = ($totalSelesai / $totalDisposisi) * 100;
                             $widthDibaca = ($totalDibaca / $totalDisposisi) * 100;
 
                             // 5. Logika Kesimpulan Akhir Status
-                            // Dianggap fully completed jika status surat master sudah final ATAU semua anak disposisinya sudah berstatus 'selesai dilaksanakan'
                             $isFullyCompleted = $statusSuratFinal || ($hasDisposisi && $totalSelesai === $totalDisposisi);
+
+                            // 6. Alokasikan String Lebar CSS
+                            $cssWidthSelesai = ($hasDisposisi ? $widthSelesai : ($isFullyCompleted ? 100 : 0)) . '%';
+                            $cssWidthDibaca = ($hasDisposisi ? $widthDibaca : ($hasDisposisi && $totalSelesai == 0 ? 100 : 0)) . '%';
                             @endphp
 
                             <div @click="fetchDetail({{ $s->id }})"
-                                class="group relative bg-white hover:bg-slate-50 border border-slate-200 hover:border-emerald-500/40 rounded-[2.5rem] p-6 transition-all duration-500 cursor-pointer shadow-sm hover:shadow-xl hover:shadow-emerald-500/5"
+                                class="group relative bg-white hover:bg-slate-50 border border-slate-200 hover:border-emerald-500/40 rounded-3xl md:rounded-[2.5rem] p-4 sm:p-5 md:p-6 transition-all duration-500 cursor-pointer shadow-sm hover:shadow-xl hover:shadow-emerald-500/5 overflow-hidden w-full"
                                 :class="selectedId == {{ $s->id }} ? 'ring-2 ring-emerald-500 border-transparent shadow-emerald-100' : ''">
 
-                                <div class="flex flex-col lg:flex-row lg:items-center gap-8">
-                                    <div class="flex items-center gap-5 lg:w-1/3">
+                                <div class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-6">
+
+                                    <div class="flex items-center gap-3 lg:gap-4 lg:w-[35%] xl:w-1/3 min-w-0">
                                         <div class="relative shrink-0">
-                                            <div class="w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 
-                        @if($isFullyCompleted)
-                            bg-emerald-500 text-white shadow-lg shadow-emerald-200
-                        @else
-                            bg-slate-100 text-slate-400 group-hover:bg-emerald-50 group-hover:text-emerald-500
-                        @endif">
-
-                                                <i class="fa-solid @if($isFullyCompleted) fa-check-double @else fa-file-lines @endif text-2xl"></i>
+                                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center transition-all duration-500 
+                                @if($isFullyCompleted) bg-emerald-500 text-white shadow-lg shadow-emerald-200 @else bg-slate-100 text-slate-400 group-hover:bg-emerald-50 group-hover:text-emerald-500 @endif">
+                                                <i class="fa-solid @if($isFullyCompleted) fa-check-double @else fa-file-lines @endif text-xl"></i>
                                             </div>
-
                                             @if($isFullyCompleted)
                                             <div class="absolute -top-1 -right-1 w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-sm">
                                                 <i class="fa-solid fa-circle-check text-emerald-500 text-[10px]"></i>
                                             </div>
                                             @endif
                                         </div>
-                                        <div class="min-w-0">
-                                            <p class="text-[9px] font-black uppercase tracking-[0.3em] mb-1 italic text-slate-400">ID Registrasi</p>
-                                            <h4 class="text-slate-800 font-bold text-lg truncate">{{ $s->no_surat }}</h4>
+                                        <div class="min-w-0 flex-1">
+                                            <p class="text-[9px] font-black uppercase tracking-[0.2em] mb-0.5 italic text-slate-400">ID Registrasi</p>
+                                            <h4 class="text-slate-800 font-bold text-sm sm:text-base md:text-lg truncate block w-full" title="{{ $s->no_surat }}">{{ $s->no_surat }}</h4>
                                         </div>
                                     </div>
 
-                                    <div class="flex-1 lg:border-l lg:border-slate-100 lg:pl-8">
-                                        <div class="flex items-center justify-between mb-3">
-                                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest italic">
-                                                {{ $hasDisposisi ? 'Progres Pelaksanaan Divisi' : 'Status Verifikasi Sekretariat' }}
+                                    <div class="flex-1 lg:border-l lg:border-slate-100 lg:pl-6 min-w-0 w-full pt-3 lg:pt-0 border-t lg:border-t-0 border-slate-50">
+                                        <div class="flex items-center justify-between mb-2 gap-2 flex-wrap sm:flex-nowrap">
+                                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest italic truncate w-full sm:w-auto">
+                                                {{ $hasDisposisi ? 'Progres Divisi' : 'Status Verifikasi' }}
                                             </p>
-                                            <div class="flex gap-2">
+                                            <div class="flex flex-wrap gap-1.5 shrink-0">
                                                 @if($hasDisposisi)
                                                 @if($totalSelesai > 0)
-                                                <span class="text-[10px] font-bold text-emerald-600">{{ $totalSelesai }} Selesai</span>
+                                                <span class="text-[10px] font-bold text-emerald-600 whitespace-nowrap">{{ $totalSelesai }} Selesai</span>
                                                 @endif
                                                 @if($totalDibaca > 0)
-                                                <span class="text-[10px] font-bold text-amber-600">{{ $totalDibaca }} Dibaca</span>
+                                                <span class="text-[10px] font-bold text-amber-600 whitespace-nowrap">{{ $totalDibaca }} Dibaca</span>
                                                 @endif
                                                 @else
-                                                <span class="text-[10px] font-bold {{ $isFullyCompleted ? 'text-emerald-600' : 'text-blue-600' }}">
+                                                <span class="text-[10px] font-bold whitespace-nowrap {{ $isFullyCompleted ? 'text-emerald-600' : 'text-blue-600' }}">
                                                     {{ $isFullyCompleted ? 'Disetujui & Diarsipkan' : 'Dalam Antrean Review' }}
                                                 </span>
                                                 @endif
                                             </div>
                                         </div>
 
-                                        <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden flex"
-                                            style="--w-selesai: {{ $hasDisposisi ? $widthSelesai : ($isFullyCompleted ? 100 : 0) }}%; --w-dibaca: {{ $hasDisposisi ? $widthDibaca : ($hasDisposisi && $totalSelesai == 0 ? 100 : 0) }}%;">
-                                            <div class="h-full bg-emerald-500 transition-all duration-1000 shadow-[0_0_10px_#10b981]"
-                                                style="width: var(--w-selesai)"></div>
-                                            <div class="h-full bg-amber-500 transition-all duration-1000 shadow-[0_0_10px_#f59e0b]"
-                                                style="width: var(--w-dibaca)"></div>
+                                        <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden flex">
+                                            <div class="h-full bg-emerald-500 transition-all duration-1000 shadow-[0_0_10px_#10b981]" @style(["width: {$cssWidthSelesai}"])></div>
+                                            <div class="h-full bg-amber-500 transition-all duration-1000 shadow-[0_0_10px_#f59e0b]" @style(["width: {$cssWidthDibaca}"])></div>
                                         </div>
 
-                                        <div class="mt-3 flex flex-wrap gap-2.5">
+                                        <div class="mt-3 flex flex-wrap gap-2 w-full">
                                             @if($hasDisposisi)
                                             @foreach($group as $disp)
                                             @php
                                             $peranClean = strtolower($disp->peran ?? '');
                                             $statusClean = strtolower($disp->status ?? '');
-
-                                            // Default Badge Styling
                                             $badgeStyle = 'bg-slate-50 border-slate-200 text-slate-500';
 
                                             if ($statusClean === 'selesai dilaksanakan') {
@@ -528,63 +518,59 @@
                                             }
                                             @endphp
 
-                                            <span class="text-[9px] px-2.5 py-1 rounded-md border font-bold uppercase flex items-center gap-1.5 {{ $badgeStyle }}">
-                                                <span>{{ $disp->penerima->nama ?? 'Unit Kerja' }}</span>
-                                                <span class="opacity-40">|</span>
-                                                <span>{{ $peranText }}</span>
+                                            <div class="text-[9px] px-2 py-1 rounded-md border font-bold uppercase flex items-center gap-1.5 max-w-full overflow-hidden {{ $badgeStyle }}">
+                                                <span class="truncate max-w-[100px] sm:max-w-[150px] inline-block">{{ $disp->penerima->nama ?? 'Unit Kerja' }}</span>
+                                                <span class="opacity-40 shrink-0">|</span>
+                                                <span class="truncate inline-block">{{ $peranText }}</span>
 
                                                 @if($statusClean === 'selesai dilaksanakan')
-                                                <i class="fa-solid fa-circle-check text-emerald-500 ml-0.5"></i>
+                                                <i class="fa-solid fa-circle-check text-emerald-500 shrink-0"></i>
                                                 @elseif($statusClean === 'sudah dibaca')
-                                                <i class="fa-solid fa-book-open text-amber-500 ml-0.5"></i>
+                                                <i class="fa-solid fa-book-open text-amber-500 shrink-0"></i>
                                                 @endif
-                                            </span>
+                                            </div>
                                             @endforeach
                                             @else
-                                            <span class="text-[8px] px-2 py-0.5 rounded-md border font-bold uppercase {{ $isFullyCompleted ? 'bg-emerald-50 border-emerald-200 text-emerald-600' : 'bg-blue-50 border-blue-200 text-blue-600' }}">
+                                            <div class="text-[9px] px-2 py-1 rounded-md border font-bold uppercase flex items-center gap-1 max-w-full truncate {{ $isFullyCompleted ? 'bg-emerald-50 border-emerald-200 text-emerald-600' : 'bg-blue-50 border-blue-200 text-blue-600' }}">
                                                 @if($isFullyCompleted)
-                                                <i class="fa-solid fa-shield-check mr-1"></i> Terverifikasi Tanpa Disposisi
+                                                <i class="fa-solid fa-shield-check shrink-0"></i> <span class="truncate">Terverifikasi Tanpa Disposisi</span>
                                                 @else
-                                                <i class="fa-solid fa-clock mr-1"></i> Menunggu Keputusan Sekretariat
+                                                <i class="fa-solid fa-clock shrink-0"></i> <span class="truncate">Menunggu Sekretariat</span>
                                                 @endif
-                                            </span>
+                                            </div>
                                             @endif
                                         </div>
                                     </div>
 
-                                    <div class="flex items-center justify-between lg:justify-end gap-6 border-t lg:border-t-0 border-slate-100 pt-5 lg:pt-0">
-                                        <div class="text-right">
+                                    <div class="flex items-center justify-between lg:justify-end gap-3 lg:border-l lg:border-slate-100 lg:pl-4 mt-3 lg:mt-0 pt-3 lg:pt-0 border-t lg:border-transparent w-full lg:w-auto shrink-0">
+                                        <div class="text-left lg:text-right flex-1 lg:flex-none">
                                             <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 italic">Status Sistem</p>
-
-                                            <span class="px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter shadow-sm flex items-center gap-2
-                        @if($isFullyCompleted)
-                            bg-emerald-500 text-white
-                        @elseif($totalDibaca > 0 || $totalSelesai > 0)
-                            bg-amber-100 text-amber-600
-                        @else
-                            bg-blue-100 text-blue-600
-                        @endif">
+                                            <span class="px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-tighter shadow-sm inline-flex items-center gap-1.5
+                                @if($isFullyCompleted) bg-emerald-500 text-white
+                                @elseif($totalDibaca > 0 || $totalSelesai > 0) bg-amber-100 text-amber-600
+                                @else bg-blue-100 text-blue-600 @endif">
 
                                                 @if($isFullyCompleted)
-                                                <i class="fa-solid fa-check-double"></i> Selesai
+                                                <i class="fa-solid fa-check-double shrink-0"></i> <span>Selesai</span>
                                                 @elseif($totalDibaca > 0 || $totalSelesai > 0)
-                                                <i class="fa-solid fa-spinner animate-spin-slow"></i> Progres Divisi
+                                                <i class="fa-solid fa-spinner animate-spin-slow shrink-0"></i> <span>Proses</span>
                                                 @else
-                                                <i class="fa-solid fa-clock"></i> Antrean Review
+                                                <i class="fa-solid fa-clock shrink-0"></i> <span>Antre</span>
                                                 @endif
                                             </span>
                                         </div>
 
-                                        <div class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center group-hover:translate-x-1 transition-transform cursor-pointer shadow-lg shadow-slate-200">
+                                        <div class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center group-hover:translate-x-1 transition-transform cursor-pointer shadow-md shrink-0">
                                             <i class="fa-solid fa-arrow-right text-[10px]"></i>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                             @empty
-                            <div class="flex-1 flex flex-col items-center justify-center text-center py-20">
-                                <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mb-6 border border-slate-100 shadow-inner">
-                                    <i class="fa-solid fa-folder-open text-3xl text-slate-200"></i>
+                            <div class="w-full flex flex-col items-center justify-center text-center py-16 md:py-20 px-4 bg-white border border-slate-200 rounded-3xl">
+                                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4 border border-slate-100 shadow-inner">
+                                    <i class="fa-solid fa-folder-open text-2xl text-slate-200"></i>
                                 </div>
                                 <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-relaxed">Belum ada data surat masuk</p>
                             </div>
@@ -592,16 +578,15 @@
                         </div>
                     </div>
 
-                    <!-- Section Kanan: Timeline Details -->
-                    <div class="xl:col-span-4 lg:col-span-5 col-span-12">
-                        <div class="bg-white/90 backdrop-blur-md rounded-[2.5rem] p-6 sm:p-8 xl:sticky xl:top-28 shadow-2xl shadow-slate-200/40 border border-slate-100 min-h-[550px] flex flex-col transition-all duration-300">
+                    <div class="lg:col-span-5 xl:col-span-4 w-full">
+                        <div id="detailSection" class="bg-white/90 backdrop-blur-md rounded-[2.5rem] p-5 sm:p-6 md:p-8 lg:sticky lg:top-28 shadow-2xl shadow-slate-200/40 border border-slate-100 min-h-[550px] flex flex-col transition-all duration-300 w-full overflow-hidden">
 
-                            <div class="flex items-center justify-between mb-8 border-b border-slate-100/80 pb-5">
-                                <div class="flex items-center gap-3.5">
-                                    <div class="w-1.5 h-7 bg-emerald-500 rounded-full shadow-sm shadow-emerald-400"></div>
+                            <div class="flex items-center justify-between mb-6 border-b border-slate-100/80 pb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-1.5 h-6 bg-emerald-500 rounded-full shadow-sm shadow-emerald-400"></div>
                                     <h3 class="text-xs font-black text-slate-800 uppercase tracking-[0.3em]">Jejak Digital</h3>
                                 </div>
-                                <div x-show="selectedId && !isLoading" class="flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full border border-emerald-100 text-[9px] font-bold tracking-wider uppercase animate-pulse">
+                                <div x-show="selectedId && !isLoading" class="flex items-center gap-1.5 bg-emerald-50 text-emerald-600 px-2 py-1 rounded-full border border-emerald-100 text-[8px] sm:text-[9px] font-bold tracking-wider uppercase animate-pulse">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Live Audit
                                 </div>
                             </div>
@@ -611,38 +596,37 @@
                                 x-transition:enter-start="opacity-0"
                                 x-transition:enter-end="opacity-100"
                                 class="flex-1 flex flex-col items-center justify-center space-y-4 my-10">
-                                <div class="relative w-14 h-14">
+                                <div class="relative w-12 h-12">
                                     <div class="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
                                     <div class="absolute inset-0 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
                                 </div>
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em] animate-pulse">Menarik Data Log...</p>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] animate-pulse">Menarik Data Log...</p>
                             </div>
 
                             <div x-show="!selectedId && !isLoading"
                                 x-transition:enter="transition ease-out duration-300"
                                 class="flex-1 flex flex-col items-center justify-center text-center my-10 px-4">
-                                <div class="w-20 h-20 bg-gradient-to-b from-slate-50 to-slate-100/50 rounded-3xl flex items-center justify-center mb-5 border border-slate-100 shadow-sm relative group">
+                                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-b from-slate-50 to-slate-100/50 rounded-3xl flex items-center justify-center mb-4 border border-slate-100 shadow-sm relative group">
                                     <div class="absolute inset-0 bg-emerald-500/5 rounded-3xl scale-75 opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"></div>
-                                    <i class="fa-solid fa-fingerprint text-3xl text-slate-300 transition-colors duration-300 group-hover:text-emerald-500"></i>
+                                    <i class="fa-solid fa-fingerprint text-2xl sm:text-3xl text-slate-300 transition-colors duration-300 group-hover:text-emerald-500"></i>
                                 </div>
                                 <h4 class="text-xs font-bold text-slate-700 mb-1">Log Tidak Aktif</h4>
-                                <p class="text-[11px] text-slate-400 font-medium max-w-[240px] leading-relaxed">Pilih salah satu surat di sebelah kiri untuk melihat riwayat audit secara real-time.</p>
+                                <p class="text-[10px] sm:text-[11px] text-slate-400 font-medium max-w-[220px] leading-relaxed">Pilih salah satu surat untuk melihat riwayat audit secara real-time.</p>
                             </div>
 
                             <div x-show="selectedId && !isLoading"
                                 x-transition:enter="transition ease-out duration-500 delay-100"
                                 x-transition:enter-start="opacity-0 transform translate-y-4"
                                 x-transition:enter-end="opacity-100 transform translate-y-0"
-                                class="space-y-6 flex-1 flex flex-col">
+                                class="space-y-6 flex-1 flex flex-col overflow-y-auto pr-1 sm:pr-2 custom-scrollbar">
 
-                                <div class="p-5 rounded-[2rem] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white relative overflow-hidden shadow-lg shadow-slate-900/10 border border-slate-800">
+                                <div class="p-4 sm:p-5 rounded-[1.5rem] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white relative overflow-hidden shadow-lg border border-slate-800 shrink-0">
                                     <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
-                                    <div class="absolute -left-6 -bottom-6 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl pointer-events-none"></div>
 
-                                    <div class="flex justify-between items-start mb-4 relative z-10">
-                                        <div>
+                                    <div class="flex justify-between items-start mb-3 relative z-10 gap-2">
+                                        <div class="min-w-0">
                                             <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Status Dokumen</p>
-                                            <span class="text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-xl shadow-inner border border-white/10 inline-block"
+                                            <span class="text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 sm:px-3 py-1 rounded-xl shadow-inner border border-white/10 inline-block truncate max-w-full"
                                                 :class="{
                                   'bg-emerald-500/20 text-emerald-400 border-emerald-500/30': ['selesai', 'diarsip', 'disetujui', 'sudah ttd'].includes(selectedSurat.status?.toLowerCase()),
                                   'bg-rose-500/20 text-rose-400 border-rose-500/30': selectedSurat.status?.toLowerCase() === 'ditolak',
@@ -651,22 +635,22 @@
                                                 x-text="selectedSurat.status || 'PROSES'">
                                             </span>
                                         </div>
-                                        <div class="p-2 bg-white/5 rounded-xl border border-white/10">
-                                            <i class="fa-solid fa-shield-halved text-slate-400 text-sm"></i>
+                                        <div class="p-2 bg-white/5 rounded-xl border border-white/10 shrink-0">
+                                            <i class="fa-solid fa-shield-halved text-slate-400 text-xs sm:text-sm"></i>
                                         </div>
                                     </div>
 
-                                    <div class="relative z-10">
+                                    <div class="relative z-10 w-full">
                                         <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Perihal / Subjek</p>
-                                        <p class="text-xs font-semibold text-slate-100 leading-relaxed line-clamp-2" x-text="selectedSurat.perihal"></p>
+                                        <p class="text-[11px] sm:text-xs font-semibold text-slate-100 leading-relaxed line-clamp-2 w-full break-words" x-text="selectedSurat.perihal"></p>
                                     </div>
                                 </div>
 
-                                <div class="relative ml-2 flex-1 border-l border-slate-100 pl-6 space-y-6 my-2">
+                                <div class="relative ml-2 sm:ml-3 flex-1 border-l-2 border-slate-100 pl-4 sm:pl-5 space-y-5 my-2">
                                     <template x-for="(step, index) in timeline" :key="index">
-                                        <div class="relative group">
+                                        <div class="relative group w-full">
 
-                                            <div class="absolute -left-[31px] top-1 w-3.5 h-3.5 rounded-full border-2 border-white shadow-sm transition-all duration-300 z-10 group-hover:scale-125"
+                                            <div class="absolute -left-[23px] sm:-left-[27px] top-1 w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full border-2 border-white shadow-sm transition-all duration-300 z-10 group-hover:scale-125"
                                                 :class="{
                                  'bg-emerald-500 ring-4 ring-emerald-100': ['DISETUJUI', 'COMPLETED', 'SELESAI', 'DIARSIP'].includes(step.status),
                                  'bg-blue-500 ring-4 ring-blue-100': ['REGISTERED', 'FORWARDED', 'SUBMITTED'].includes(step.status),
@@ -675,71 +659,89 @@
                              }">
                                             </div>
 
-                                            <div class="bg-slate-50/50 group-hover:bg-white border border-slate-100 group-hover:border-slate-200/80 p-4 rounded-2xl transition-all duration-300 shadow-none group-hover:shadow-md group-hover:shadow-slate-100/50">
-
-                                                <div class="flex items-start justify-between gap-4 mb-1.5">
-                                                    <span class="text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5"
+                                            <div class="bg-slate-50/50 group-hover:bg-white border border-slate-100 group-hover:border-slate-200 p-3 sm:p-4 rounded-2xl transition-all duration-300 shadow-none group-hover:shadow-md overflow-hidden">
+                                                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
+                                                    <span class="text-[9px] sm:text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 w-full truncate"
                                                         :class="{
-              'text-emerald-600': ['DISETUJUI', 'COMPLETED', 'SELESAI', 'DIARSIP'].includes(step.status?.toUpperCase()),
-              'text-blue-600': ['REGISTERED', 'FORWARDED', 'SUBMITTED', 'DISPOSISI', 'PROSES'].includes(step.status?.toUpperCase()),
-              'text-rose-600': ['DITOLAK', 'REJECTED'].includes(step.status?.toUpperCase()),
-              'text-amber-600': ['REPORTED', 'PENDING', 'REVIEW'].includes(step.status?.toUpperCase())
-          }">
-                                                        <i class="fa-solid text-[9px]" :class="step.icon || 'fa-circle-dot'"></i>
-                                                        <span x-text="step.title"></span>
+                                          'text-emerald-600': ['DISETUJUI', 'COMPLETED', 'SELESAI', 'DIARSIP'].includes(step.status?.toUpperCase()),
+                                          'text-blue-600': ['REGISTERED', 'FORWARDED', 'SUBMITTED', 'DISPOSISI', 'PROSES'].includes(step.status?.toUpperCase()),
+                                          'text-rose-600': ['DITOLAK', 'REJECTED'].includes(step.status?.toUpperCase()),
+                                          'text-amber-600': ['REPORTED', 'PENDING', 'REVIEW'].includes(step.status?.toUpperCase())
+                                          }">
+                                                        <i class="fa-solid text-[8px]" :class="step.icon || 'fa-circle-dot'"></i>
+                                                        <span class="truncate" x-text="step.title"></span>
                                                     </span>
-                                                    <span class="text-[9px] font-mono text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded" x-text="formatDate(step.date)"></span>
+                                                    <span class="text-[8px] sm:text-[9px] font-mono text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded shrink-0 self-start" x-text="formatDate(step.date)"></span>
                                                 </div>
 
-                                                <p class="text-xs text-slate-600 leading-relaxed mb-3 font-medium" x-text="step.desc"></p>
+                                                <p class="text-[11px] sm:text-xs text-slate-600 leading-relaxed mb-2 font-medium break-words w-full" x-text="step.desc"></p>
 
                                                 <template x-if="step.peran">
-                                                    <div class="mb-3">
-                                                        <span class="text-[9px] inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-bold uppercase tracking-wide border shadow-sm"
+                                                    <div class="mb-2">
+                                                        <span class="text-[8px] sm:text-[9px] inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded-md font-bold uppercase tracking-wide border max-w-full truncate"
                                                             :class="{
                                               'bg-rose-50 border-rose-100 text-rose-600': step.peran.toLowerCase() === 'pelaksana',
                                               'bg-blue-50 border-blue-100 text-blue-600': step.peran.toLowerCase() === 'pemantau',
                                               'bg-slate-50 border-slate-100 text-slate-500': !['pelaksana', 'pemantau'].includes(step.peran.toLowerCase())
                                           }">
-                                                            <i class="fa-solid text-[8px]" :class="step.peran.toLowerCase() === 'pelaksana' ? 'fa-fire-pulse' : 'fa-eye'"></i>
-                                                            <span x-text="step.peran.toLowerCase() === 'pelaksana' 
-                                            ? (step.ketua_tim ? 'Pelaksana (' + step.ketua_tim + ')' : 'Pelaksana Langsung')
-                                            : (step.peran.toLowerCase() === 'pemantau'
-                                                ? (step.ketua_tim ? 'Pemantau (' + step.ketua_tim + ')' : 'Pemantau Langsung')
-                                                : step.peran)">
+                                                            <i class="fa-solid text-[7px]" :class="step.peran.toLowerCase() === 'pelaksana' ? 'fa-fire-pulse' : 'fa-eye'"></i>
+                                                            <span class="truncate" x-text="step.peran.toLowerCase() === 'pelaksana' 
+                                                ? (step.ketua_tim ? 'Pelaksana (' + step.ketua_tim + ')' : 'Pelaksana')
+                                                : (step.peran.toLowerCase() === 'pemantau'
+                                                    ? (step.ketua_tim ? 'Pemantau (' + step.ketua_tim + ')' : 'Pemantau')
+                                                    : step.peran)">
                                                             </span>
                                                         </span>
                                                     </div>
                                                 </template>
 
-                                                <div class="flex items-center gap-2 pt-2.5 border-t border-slate-100/70">
-                                                    <div class="w-5 h-5 rounded-md bg-slate-100 flex items-center justify-center border border-slate-200/50">
-                                                        <i class="fa-solid fa-user-shield text-[8px]"
+                                                <div class="flex items-center gap-2 pt-2 mt-2 border-t border-slate-100 w-full">
+                                                    <div class="w-4 h-4 sm:w-5 sm:h-5 rounded-md bg-slate-100 flex items-center justify-center border border-slate-200/50 shrink-0">
+                                                        <i class="fa-solid fa-user-shield text-[7px] sm:text-[8px]"
                                                             :class="step.actor_role === 'admin' ? 'text-emerald-500' : 'text-slate-400'"></i>
                                                     </div>
-                                                    <div class="flex flex-col">
-                                                        <p class="text-[9px] font-bold text-slate-700 leading-tight" x-text="step.actor"></p>
-                                                        <p class="text-[7px] text-slate-400 font-medium uppercase tracking-wider" x-text="step.actor_role === 'admin' ? 'Sekretariat' : 'Divisi / Unit'"></p>
+                                                    <div class="flex flex-col min-w-0 flex-1">
+                                                        <p class="text-[8px] sm:text-[9px] font-bold text-slate-700 leading-tight truncate w-full" x-text="step.actor"></p>
+                                                        <p class="text-[7px] text-slate-400 font-medium uppercase tracking-wider truncate" x-text="step.actor_role === 'admin' ? 'Sekretariat' : 'Divisi / Unit'"></p>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </template>
                                 </div>
 
-                                <div class="mt-auto pt-4 border-t border-slate-100/80">
+                                <div class="mt-auto pt-4 border-t border-slate-100 shrink-0 pb-1">
                                     <button @click="closeDetail()"
-                                        class="w-full py-3 bg-slate-50 hover:bg-slate-100 active:scale-[0.98] border border-slate-200/60 hover:border-slate-300/80 text-slate-600 hover:text-slate-800 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-sm">
-                                        <i class="fa-solid fa-circle-xmark text-slate-400 group-hover:text-slate-600"></i> Tutup Detail Log
+                                        class="w-full py-2.5 sm:py-3 bg-slate-50 hover:bg-slate-100 active:scale-[0.98] border border-slate-200 hover:border-slate-300 text-slate-600 hover:text-slate-800 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all duration-200 flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-circle-xmark text-slate-400"></i> Tutup Detail Log
                                     </button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
+
                 </div>
             </div>
+
+            <style>
+                /* Optional: Untuk memastikan scrollbar di dalam timeline tetap ramping dan tidak merusak layout */
+                .custom-scrollbar::-webkit-scrollbar {
+                    width: 4px;
+                }
+
+                .custom-scrollbar::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+
+                .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background: #cbd5e1;
+                    border-radius: 10px;
+                }
+
+                .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                    background: #94a3b8;
+                }
+            </style>
         </main>
 
 
