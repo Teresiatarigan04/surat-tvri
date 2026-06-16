@@ -567,85 +567,7 @@
         </div>
     </main>
 
-    <div x-show="addModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4" x-cloak x-transition>
-        <div class="absolute inset-0 bg-slate-950/95 backdrop-blur-md" @click="addModal = false"></div>
-        <div class="glass-card w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-[35px] p-6 md:p-8 z-10 border border-white/10 animate__animated animate__fadeInDown custom-scrollbar">
-            <h3 class="text-xl font-black text-white italic uppercase mb-6 flex items-center gap-3">
-                <i class="fa-solid fa-plus-circle text-blue-500"></i> Registrasi <span class="text-blue-500">Surat</span>
-            </h3>
-            <form action="{{ route('admin.surat.masuk.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-                @csrf
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="space-y-1">
-                        <label class="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">No Surat</label>
-                        <input type="text" name="no_surat" required placeholder="001/TVRI/2026" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:border-blue-500 outline-none transition-all">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Tanggal</label>
-                        <input type="date" name="tanggal_surat" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:border-blue-500 outline-none transition-all">
-                    </div>
-                </div>
-                <div class="space-y-1">
-                    <label class="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Asal Instansi</label>
-                    <input type="text" name="pengirim" required placeholder="Nama Pengirim" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:border-blue-500 outline-none transition-all">
-                </div>
-                <div class="space-y-2">
-                    <label class="text-[9px] font-black text-blue-400 uppercase tracking-widest ml-1">Sifat Dokumen</label>
-                    <div class="grid grid-cols-3 gap-2">
-                        @foreach(['penting' => 'PENTING', 'segera' => 'SEGERA', 'rahasia' => 'RAHASIA'] as $val => $label)
-                        <label class="cursor-pointer">
-                            <input type="radio" name="sifat" value="{{ $val }}" class="peer hidden" {{ $val == 'penting' ? 'checked' : '' }}>
-                            <div class="py-3 rounded-xl bg-white/[0.03] border border-white/10 text-center peer-checked:border-blue-500/50 peer-checked:bg-blue-500/10 transition-all">
-                                <span class="text-[9px] font-black text-slate-500 peer-checked:text-blue-400 uppercase">{{ $label }}</span>
-                            </div>
-                        </label>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="space-y-1">
-                    <label class="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Perihal / Ringkasan</label>
-                    <textarea name="perihal" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:border-blue-500 outline-none resize-none transition-all" rows="3"></textarea>
-                </div>
-                <div class="space-y-1" x-data="{ fileName: '' }">
-                    <label class="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Dokumen Lampiran</label>
-
-                    <div class="relative group">
-                        <div class="w-full bg-white/5 border-2 border-dashed border-white/10 rounded-2xl px-4 py-6 flex flex-col items-center justify-center gap-2 group-hover:border-blue-500/50 group-hover:bg-blue-500/5 transition-all cursor-pointer">
-
-                            <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center mb-1 group-hover:scale-110 transition-transform">
-                                <i class="fa-solid fa-cloud-arrow-up text-blue-500 text-sm"></i>
-                            </div>
-
-                            <p class="text-[10px] text-slate-400 font-medium tracking-wide text-center" x-show="!fileName">
-                                Drag & drop file atau <span class="text-blue-500 font-bold">Pilih File</span>
-                            </p>
-
-                            <div x-show="fileName" class="flex items-center gap-2 bg-blue-500/20 px-3 py-1.5 rounded-lg border border-blue-500/30">
-                                <i class="fa-solid fa-file-pdf text-blue-400 text-[10px]"></i>
-                                <span x-text="fileName" class="text-[10px] text-blue-200 font-bold italic truncate max-w-[150px]"></span>
-                                <button type="button" @click="fileName = ''; $refs.fileInput.value = ''" class="text-blue-400 hover:text-red-500 ml-1">
-                                    <i class="fa-solid fa-circle-xmark"></i>
-                                </button>
-                            </div>
-
-                            <p class="text-[8px] text-slate-500 uppercase tracking-tighter">Maksimal: PDF, DOCX (10MB)</p>
-                        </div>
-
-                        <input type="file"
-                            name="file_surat"
-                            x-ref="fileInput"
-                            @change="fileName = $refs.fileInput.files[0].name"
-                            required
-                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20">
-                    </div>
-                </div>
-                <div class="flex gap-3 pt-4">
-                    <button type="button" @click="addModal = false" class="flex-1 py-4 bg-white/5 text-slate-400 rounded-2xl text-[9px] font-black uppercase tracking-widest border border-white/5">Batal</button>
-                    <button type="submit" class="flex-1 py-4 bg-blue-600 text-white rounded-2xl text-[9px] font-black uppercase tracking-widest shadow-xl shadow-blue-600/20">Simpan Data</button>
-                </div>
-            </form>
-        </div>
-    </div>
+   
 
     <div x-show="editModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4" x-cloak x-transition>
         <div class="absolute inset-0 bg-slate-950/95 backdrop-blur-md" @click="editModal = false"></div>
@@ -733,152 +655,129 @@
 
     <!-- Modal Detail Surat Masuk -->
     <template x-teleport="body">
+    <div x-show="detailModal"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6"
+        x-cloak
+        x-data="{ activeTab: 'data' }"> <div x-show="detailModal"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            class="absolute inset-0 bg-slate-950/95 backdrop-blur-2xl"
+            @click="detailModal = false"></div>
+
         <div x-show="detailModal"
-            class="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6"
-            x-cloak
-            x-data="{ activeTab: 'data' }"> <!-- State untuk Tab Mobile -->
+            x-transition:enter="transition ease-out duration-500 transform"
+            x-transition:enter-start="opacity-0 scale-95 translate-y-10"
+            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+            class="relative w-full max-w-6xl h-[90vh] md:h-[85vh] bg-slate-900/40 rounded-[30px] md:rounded-[45px] border border-white/10 shadow-[0_0_80px_-15px_rgba(0,0,0,0.6)] overflow-hidden flex flex-col z-10 backdrop-blur-md">
 
-            <!-- Backdrop -->
-            <div x-show="detailModal"
-                x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="opacity-0"
-                x-transition:enter-end="opacity-100"
-                class="absolute inset-0 bg-slate-950/95 backdrop-blur-2xl"
-                @click="detailModal = false"></div>
-
-            <!-- Modal Content -->
-            <div x-show="detailModal"
-                x-transition:enter="transition ease-out duration-500 transform"
-                x-transition:enter-start="opacity-0 scale-95 translate-y-10"
-                x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                class="relative w-full max-w-6xl h-[90vh] md:h-[85vh] bg-slate-900/40 rounded-[30px] md:rounded-[45px] border border-white/10 shadow-[0_0_80px_-15px_rgba(0,0,0,0.6)] overflow-hidden flex flex-col z-10 backdrop-blur-md">
-
-                <!-- Header -->
-                <div class="px-6 md:px-10 py-4 md:py-6 border-b border-white/5 bg-white/[0.03] flex justify-between items-center flex-shrink-0">
-                    <div class="flex items-center gap-3 md:gap-4">
-                        <div class="hidden md:flex w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 items-center justify-center text-white shadow-lg shadow-blue-500/20">
-                            <i class="fa-solid fa-file-import text-lg"></i>
+            <div class="px-6 md:px-10 py-4 md:py-6 border-b border-white/5 bg-white/[0.03] flex justify-between items-center flex-shrink-0">
+                <div class="flex items-center gap-3 md:gap-4">
+                    <div class="hidden md:flex w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 items-center justify-center text-white shadow-lg shadow-blue-500/20">
+                        <i class="fa-solid fa-file-import text-lg"></i>
+                    </div>
+                    <div class="max-w-[200px] md:max-w-none">
+                        <h2 class="text-white font-black italic uppercase tracking-tighter text-sm md:text-lg leading-none truncate" x-text="selectedSurat.no_surat"></h2>
+                        <div class="flex items-center gap-2 mt-1.5">
+                            <span class="flex h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                            <p class="text-[8px] md:text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em]">Incoming Mail Detail</p>
                         </div>
-                        <div class="max-w-[200px] md:max-w-none">
-                            <h2 class="text-white font-black italic uppercase tracking-tighter text-sm md:text-lg leading-none truncate" x-text="selectedSurat.no_surat"></h2>
-                            <div class="flex items-center gap-2 mt-1.5">
-                                <span class="flex h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-                                <p class="text-[8px] md:text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em]">Incoming Mail Detail</p>
+                    </div>
+                </div>
+
+                <button @click="detailModal = false" class="group w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-red-500 transition-all border border-white/10">
+                    <i class="fa-solid fa-xmark text-slate-400 group-hover:text-white text-xs"></i>
+                </button>
+            </div>
+
+            <div class="flex lg:hidden bg-slate-900/50 p-1 border-b border-white/5">
+                <button @click="activeTab = 'data'"
+                    :class="activeTab === 'data' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400'"
+                    class="flex-1 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all">
+                    Informasi
+                </button>
+                <button @click="activeTab = 'preview'"
+                    :class="activeTab === 'preview' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400'"
+                    class="flex-1 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all">
+                    Preview PDF
+                </button>
+            </div>
+
+            <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+
+                <div :class="activeTab === 'data' ? 'flex' : 'hidden lg:flex'"
+                    class="w-full lg:w-[350px] xl:w-[400px] p-6 md:p-10 overflow-y-auto border-r border-white/5 bg-slate-900/20 flex-col custom-scrollbar italic">
+
+                    <div class="flex flex-wrap gap-2 mb-8">
+                        <span class="px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[9px] font-black uppercase tracking-widest" x-text="selectedSurat.sifat"></span>
+                        <span class="px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-widest" x-text="selectedSurat.status"></span>
+                    </div>
+
+                    <div class="space-y-8 flex-1">
+                        <div class="group">
+                            <label class="text-[9px] font-black text-blue-500 uppercase tracking-[0.3em] mb-2 block">Origin / Pengirim</label>
+                            <div class="text-xs md:text-sm text-white font-bold leading-tight uppercase tracking-tight" x-text="selectedSurat.pengirim"></div>
+                        </div>
+
+                        <div class="group">
+                            <label class="text-[9px] font-black text-blue-500 uppercase tracking-[0.3em] mb-2 block">Subject / Perihal</label>
+                            <div class="text-xs md:text-sm text-slate-300 leading-relaxed font-medium" x-text="selectedSurat.perihal"></div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-6 py-6 border-y border-white/5">
+                            <div>
+                                <label class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1 block">Tgl. Surat</label>
+                                <div class="text-[10px] text-white font-black" x-text="selectedSurat.tanggal_surat"></div>
+                            </div>
+                            <div>
+                                <label class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1 block">Tgl. Arsip</label>
+                                <div class="text-[10px] text-white font-black" x-text="selectedSurat.created_at ? new Date(selectedSurat.created_at).toLocaleDateString('id-ID') : '-'"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Close Button -->
-                    <button @click="detailModal = false" class="group w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-red-500 transition-all border border-white/10">
-                        <i class="fa-solid fa-xmark text-slate-400 group-hover:text-white text-xs"></i>
-                    </button>
+                    <div class="mt-8 space-y-3">
+                        <a :href="'{{ url('adminsekret/surat-masuk/download') }}/' + selectedSurat.file_surat"
+                            class="group w-full flex items-center justify-between px-6 py-4 bg-white text-slate-950 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all hover:bg-blue-600 hover:text-white active:scale-95 shadow-xl shadow-white/5">
+                            <span>Unduh Dokumen</span>
+                            <i class="fa-solid fa-cloud-arrow-down text-base"></i>
+                        </a>
+                        <button @click="detailModal = false" class="lg:hidden w-full py-4 text-slate-500 text-[10px] font-black uppercase tracking-widest">
+                            Kembali ke List
+                        </button>
+                    </div>
                 </div>
 
-                <!-- TAB SWITCHER (Hanya muncul di Mobile < lg) -->
-                <div class="flex lg:hidden bg-slate-900/50 p-1 border-b border-white/5">
-                    <button @click="activeTab = 'data'"
-                        :class="activeTab === 'data' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400'"
-                        class="flex-1 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all">
-                        Informasi
-                    </button>
-                    <button @click="activeTab = 'preview'"
-                        :class="activeTab === 'preview' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400'"
-                        class="flex-1 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all">
-                        Preview PDF
-                    </button>
-                </div>
+                <div :class="activeTab === 'preview' ? 'flex' : 'hidden lg:flex'"
+                    class="flex-1 bg-black/40 p-4 md:p-8 relative flex flex-col overflow-hidden h-full">
 
-                <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
-
-                    <!-- KIRI: Sidebar Informasi (Muncul jika activeTab 'data' atau di layar Desktop) -->
-                    <div :class="activeTab === 'data' ? 'flex' : 'hidden lg:flex'"
-                        class="w-full lg:w-[350px] xl:w-[400px] p-6 md:p-10 overflow-y-auto border-r border-white/5 bg-slate-900/20 flex-col custom-scrollbar italic">
-
-                        <div class="flex flex-wrap gap-2 mb-8">
-                            <span class="px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[9px] font-black uppercase tracking-widest" x-text="selectedSurat.sifat"></span>
-                            <span class="px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-widest" x-text="selectedSurat.status"></span>
-                        </div>
-
-                        <div class="space-y-8 flex-1">
-                            <div class="group">
-                                <label class="text-[9px] font-black text-blue-500 uppercase tracking-[0.3em] mb-2 block">Origin / Pengirim</label>
-                                <div class="text-xs md:text-sm text-white font-bold leading-tight uppercase tracking-tight" x-text="selectedSurat.pengirim"></div>
-                            </div>
-
-                            <div class="group">
-                                <label class="text-[9px] font-black text-blue-500 uppercase tracking-[0.3em] mb-2 block">Subject / Perihal</label>
-                                <div class="text-xs md:text-sm text-slate-300 leading-relaxed font-medium" x-text="selectedSurat.perihal"></div>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-6 py-6 border-y border-white/5">
-                                <div>
-                                    <label class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1 block">Tgl. Surat</label>
-                                    <div class="text-[10px] text-white font-black" x-text="selectedSurat.tanggal_surat"></div>
-                                </div>
-                                <div>
-                                    <label class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1 block">Tgl. Arsip</label>
-                                    <div class="text-[10px] text-white font-black" x-text="selectedSurat.created_at ? new Date(selectedSurat.created_at).toLocaleDateString('id-ID') : '-'"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Footer Sidebar (Download & Close) -->
-                        <div class="mt-8 space-y-3">
-                            <a :href="'{{ url('adminsekret/surat-masuk/download') }}/' + selectedSurat.file_surat"
-                                class="group w-full flex items-center justify-between px-6 py-4 bg-white text-slate-950 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all hover:bg-blue-600 hover:text-white active:scale-95 shadow-xl shadow-white/5">
-                                <span>Unduh Dokumen</span>
-                                <i class="fa-solid fa-cloud-arrow-down text-base"></i>
-                            </a>
-                            <button @click="detailModal = false" class="lg:hidden w-full py-4 text-slate-500 text-[10px] font-black uppercase tracking-widest">
-                                Kembali ke List
-                            </button>
-                        </div>
+                    <div class="hidden md:flex mb-4 items-center gap-3 px-2">
+                        <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em]">Integrated PDF Viewer</span>
                     </div>
 
-                    <!-- KANAN: Preview Area (Muncul jika activeTab 'preview' atau di layar Desktop) -->
-                    <div :class="activeTab === 'preview' ? 'flex' : 'hidden lg:flex'"
-                        class="flex-1 bg-black/40 p-4 md:p-8 relative flex flex-col overflow-hidden h-full">
+                    <div class="flex-1 rounded-[25px] md:rounded-[40px] overflow-hidden border border-white/5 bg-[#0a0c10] shadow-2xl relative">
+                        <template x-if="selectedSurat.file_surat">
+                            <iframe :src="'https://docs.google.com/gview?url=' + encodeURIComponent('{{ asset('uploads/surat_masuk') }}/' + selectedSurat.file_surat) + '&embedded=true'"
+                                class="w-full h-full opacity-90 border-0"
+                                allow="autoplay">
+                            </iframe>
+                        </template>
 
-                        <div class="hidden md:flex mb-4 items-center gap-3 px-2">
-                            <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em]">Integrated PDF Viewer</span>
-                        </div>
-
-                        <div class="flex-1 rounded-[25px] md:rounded-[40px] overflow-hidden border border-white/5 bg-[#0a0c10] shadow-2xl relative">
-                            <template x-if="selectedSurat.file_surat">
-                                <object :data="'{{ asset('uploads/surat_masuk') }}/' + encodeURIComponent(selectedSurat.file_surat)"
-                                    type="application/pdf"
-                                    class="w-full h-full opacity-90">
-
-                                    <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-slate-950">
-                                        <div class="w-20 h-20 bg-blue-500/10 rounded-3xl flex items-center justify-center mb-6 border border-blue-500/20">
-                                            <i class="fa-solid fa-file-pdf text-3xl text-blue-500"></i>
-                                        </div>
-                                        <h4 class="text-white text-xs font-black uppercase mb-3 tracking-widest">Dokumen Siap</h4>
-                                        <p class="text-slate-500 text-[10px] mb-8 max-w-[240px] leading-relaxed italic uppercase font-bold">Preview tidak tersedia secara langsung di device ini.</p>
-
-                                        <a :href="'{{ asset('uploads/surat_masuk') }}/' + encodeURIComponent(selectedSurat.file_surat)" target="_blank"
-                                            class="px-10 py-4 bg-blue-600 hover:bg-blue-500 text-white text-[10px] font-black uppercase rounded-2xl shadow-lg shadow-blue-900/40 transition-all active:scale-95">
-                                            Buka PDF di Tab Baru
-                                        </a>
-                                    </div>
-                                </object>
-                            </template>
-
-                            <div x-show="!selectedSurat.file_surat" class="absolute inset-0 flex items-center justify-center bg-slate-950">
-                                <div class="flex flex-col items-center">
-                                    <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                                    <span class="mt-4 text-[10px] text-slate-600 font-black uppercase tracking-[0.3em]">Syncing Document...</span>
-                                </div>
+                        <div x-show="!selectedSurat.file_surat" class="absolute inset-0 flex items-center justify-center bg-slate-950">
+                            <div class="flex flex-col items-center">
+                                <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                                <span class="mt-4 text-[10px] text-slate-600 font-black uppercase tracking-[0.3em]">Syncing Document...</span>
                             </div>
                         </div>
                     </div>
-
                 </div>
+
             </div>
         </div>
-    </template>
-
+    </div>
+</template>
+    
     <style>
         .glass-card {
             background: rgba(15, 23, 42, 0.7);
