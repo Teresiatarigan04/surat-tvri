@@ -1434,7 +1434,7 @@
                 <div x-show="showModal"
                     x-cloak
                     x-effect="document.body.style.overflow = showModal ? 'hidden' : 'auto'"
-                    class="fixed top-0 left-0 z-[9999] flex items-center justify-center w-full h-[100dvh] p-4 bg-slate-950/90 backdrop-blur-md isolate"
+                    class="fixed top-0 left-0 z-[9999] flex items-center justify-center w-full h-[100dvh] p-4 sm:p-6 bg-slate-950/90 backdrop-blur-md isolate"
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0"
                     x-transition:enter-end="opacity-100"
@@ -1455,60 +1455,60 @@
                 instruksi: [],
                 isUploading: false,
                 fileName: ''
-             }"
+            }"
                         @click.away="if (!openSurat) showModal = false"
-                        class="relative w-full max-w-2xl bg-slate-900 border border-white/10 rounded-[2.5rem] shadow-[0_30px_100px_rgba(0,0,0,0.8)] backdrop-blur-2xl flex flex-col overflow-hidden transition-all duration-500 z-50"
+                        class="relative w-full max-w-2xl bg-slate-900 border border-white/10 rounded-[2rem] sm:rounded-[2.5rem] shadow-[0_30px_100px_rgba(0,0,0,0.8)] backdrop-blur-2xl flex flex-col overflow-hidden transition-all duration-500 z-50"
                         style="max-height: 90vh;">
 
                         @csrf
 
-                        <div class="px-10 py-7 border-b border-white/5 bg-white/[0.02] flex items-center justify-between flex-shrink-0">
-                            <div class="flex items-center gap-5">
-                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-400 flex items-center justify-center shadow-lg shadow-blue-500/20 rotate-3">
-                                    <i class="fa-solid fa-feather-pointed text-white text-xl"></i>
+                        <div class="px-6 py-5 sm:px-10 sm:py-7 border-b border-white/5 bg-white/[0.02] flex items-center justify-between flex-shrink-0">
+                            <div class="flex items-center gap-4 sm:gap-5">
+                                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-400 flex items-center justify-center shadow-lg shadow-blue-500/20 rotate-3">
+                                    <i class="fa-solid fa-feather-pointed text-white text-lg sm:text-xl"></i>
                                 </div>
                                 <div>
-                                    <h2 class="text-xl font-black text-white tracking-tight uppercase italic">Disposisi Akselerasi</h2>
+                                    <h2 class="text-lg sm:text-xl font-black text-white tracking-tight uppercase italic">Disposisi Akselerasi</h2>
                                     <div class="flex items-center gap-2 mt-0.5">
                                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                        <p class="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-bold">System Online</p>
+                                        <p class="text-[9px] sm:text-[10px] text-slate-400 uppercase tracking-[0.2em] font-bold">System Online</p>
                                     </div>
                                 </div>
                             </div>
                             <button type="button" @click="showModal = false" class="text-slate-500 hover:text-white transition-colors w-8 h-8 rounded-full hover:bg-white/5 flex items-center justify-center">
-                                <i class="fa-solid fa-xmark text-lg"></i>
+                                <i class="fa-solid fa-xmark text-base sm:text-lg"></i>
                             </button>
                         </div>
 
-                        <div class="flex-1 px-10 py-8 overflow-y-auto space-y-10 scroll-smooth">
+                        <div class="flex-1 px-6 py-6 sm:px-10 sm:py-8 overflow-y-auto space-y-8 sm:space-y-10 scroll-smooth custom-scrollbar">
 
-                            <div class="space-y-4">
+                            <div class="space-y-3 sm:space-y-4">
                                 <div class="flex items-center gap-3 ml-1">
-                                    <span class="w-8 h-[2px] bg-blue-500"></span>
-                                    <label class="text-[10px] font-black text-blue-400 uppercase tracking-[0.4em]">Arsip Surat</label>
+                                    <span class="w-6 sm:w-8 h-[2px] bg-blue-500"></span>
+                                    <label class="text-[9px] sm:text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] sm:tracking-[0.4em]">Arsip Surat</label>
                                 </div>
 
                                 <div class="relative">
                                     <input type="hidden" name="surat_id" x-model="selectedSurat">
                                     <button type="button" @click.stop="openSurat = !openSurat"
-                                        class="w-full bg-slate-800/40 border border-white/5 rounded-2xl px-6 py-5 text-sm flex justify-between items-center transition-all duration-300 hover:bg-slate-800/80 hover:border-blue-500/30"
+                                        class="w-full bg-slate-800/40 border border-white/5 rounded-xl sm:rounded-2xl px-5 py-4 sm:px-6 sm:py-5 text-xs sm:text-sm flex justify-between items-center transition-all duration-300 hover:bg-slate-800/80 hover:border-blue-500/30"
                                         :class="openSurat ? 'ring-2 ring-blue-500/40 border-transparent bg-slate-800' : ''">
-                                        <div class="flex items-center gap-4">
-                                            <i class="fa-solid fa-magnifying-glass text-blue-500/50"></i>
-                                            <span x-text="selectedSuratLabel" :class="selectedSurat ? 'text-white font-bold italic' : 'text-slate-500'"></span>
+                                        <div class="flex items-center gap-3 sm:gap-4 flex-1 min-w-0 mr-3">
+                                            <i class="fa-solid fa-magnifying-glass text-blue-500/50 flex-shrink-0"></i>
+                                            <span x-text="selectedSuratLabel" class="truncate w-full text-left" :class="selectedSurat ? 'text-white font-bold italic' : 'text-slate-500'"></span>
                                         </div>
-                                        <i class="fa-solid fa-chevron-right text-[10px] text-slate-600 transition-transform duration-500" :class="openSurat ? 'rotate-90 text-blue-400' : ''"></i>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-slate-600 transition-transform duration-500 flex-shrink-0" :class="openSurat ? 'rotate-90 text-blue-400' : ''"></i>
                                     </button>
 
                                     <div x-show="openSurat" x-cloak @click.away="openSurat = false"
-                                        class="absolute z-[110] left-0 right-0 mt-3 bg-slate-800 border border-white/10 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-xl">
-                                        <div class="max-h-52 overflow-y-auto p-3 space-y-1">
+                                        class="absolute z-[110] left-0 right-0 mt-2 sm:mt-3 bg-slate-800 border border-white/10 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden backdrop-blur-xl">
+                                        <div class="max-h-48 sm:max-h-52 overflow-y-auto p-2 sm:p-3 space-y-1">
                                             @foreach($surat_tersedia as $surat)
                                             <button type="button" @click="selectedSurat = '{{ $surat->id }}'; selectedSuratLabel = '{{ $surat->no_surat }}'; openSurat = false"
-                                                class="w-full text-left p-4 rounded-2xl hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-500 transition-all group">
-                                                <div class="flex justify-between items-center">
-                                                    <span class="text-xs font-bold text-slate-300 group-hover:text-white">{{ $surat->no_surat }}</span>
-                                                    <span class="text-[8px] px-2 py-1 rounded-lg bg-black/20 text-blue-400 group-hover:text-white uppercase font-black">{{ $surat->status }}</span>
+                                                class="w-full text-left p-3 sm:p-4 rounded-xl sm:rounded-2xl hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-500 transition-all group">
+                                                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-0">
+                                                    <span class="text-[11px] sm:text-xs font-bold text-slate-300 group-hover:text-white truncate sm:break-normal">{{ $surat->no_surat }}</span>
+                                                    <span class="text-[8px] px-2 py-1 rounded-lg bg-black/20 text-blue-400 group-hover:text-white uppercase font-black w-fit flex-shrink-0">{{ $surat->status }}</span>
                                                 </div>
                                             </button>
                                             @endforeach
@@ -1517,10 +1517,10 @@
                                 </div>
                             </div>
 
-                            <div class="space-y-4">
+                            <div class="space-y-3 sm:space-y-4">
                                 <div class="flex items-center gap-3 ml-1">
-                                    <span class="w-8 h-[2px] bg-emerald-500"></span>
-                                    <label class="text-[10px] font-black text-emerald-400 uppercase tracking-[0.4em]">Delegasi Ke</label>
+                                    <span class="w-6 sm:w-8 h-[2px] bg-emerald-500"></span>
+                                    <label class="text-[9px] sm:text-[10px] font-black text-emerald-400 uppercase tracking-[0.3em] sm:tracking-[0.4em]">Delegasi Ke</label>
                                 </div>
 
                                 <div class="flex flex-col gap-3">
@@ -1530,22 +1530,22 @@
                                                 x-model="selectedAdmins"
                                                 @change="if(selectedAdmins.includes('{{ Auth::user()->id }}')) { roles['{{ Auth::user()->id }}'] = 'pelaksana'; if(!teams['{{ Auth::user()->id }}']) teams['{{ Auth::user()->id }}'] = ['']; }"
                                                 class="hidden">
-                                            <div class="p-4 rounded-[1.5rem] border-2 transition-all duration-500 flex flex-col gap-3"
+                                            <div class="p-3 sm:p-4 rounded-[1.25rem] sm:rounded-[1.5rem] border-2 transition-all duration-500 flex flex-col gap-3"
                                                 :class="selectedAdmins.includes('{{ Auth::user()->id }}') ? 'bg-blue-600/10 border-blue-500 shadow-[0_0_20px_rgba(37,99,235,0.15)] scale-[1.01]' : 'bg-slate-800/30 border-white/5 hover:border-white/20'">
-                                                <div class="flex items-center justify-between">
-                                                    <div class="flex items-center gap-4">
-                                                        <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-all"
+                                                <div class="flex items-center justify-between gap-3">
+                                                    <div class="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+                                                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center transition-all flex-shrink-0"
                                                             :class="selectedAdmins.includes('{{ Auth::user()->id }}') ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-700 text-slate-500'">
-                                                            <i class="fa-solid fa-user-shield text-xs"></i>
+                                                            <i class="fa-solid fa-user-shield text-[10px] sm:text-xs"></i>
                                                         </div>
-                                                        <div class="overflow-hidden">
-                                                            <p class="text-[11px] font-black truncate uppercase tracking-tighter" :class="selectedAdmins.includes('{{ Auth::user()->id }}') ? 'text-white' : 'text-slate-400'">
+                                                        <div class="flex-1 min-w-0">
+                                                            <p class="text-[10px] sm:text-[11px] font-black truncate uppercase tracking-tighter" :class="selectedAdmins.includes('{{ Auth::user()->id }}') ? 'text-white' : 'text-slate-400'">
                                                                 {{ Auth::user()->nama }} (Diri Sendiri)
                                                             </p>
-                                                            <p class="text-[8px] uppercase tracking-[0.1em] text-blue-400 font-bold mt-0.5">{{ Auth::user()->role }}</p>
+                                                            <p class="text-[7px] sm:text-[8px] uppercase tracking-[0.1em] text-blue-400 font-bold mt-0.5 truncate">{{ Auth::user()->role }}</p>
                                                         </div>
                                                     </div>
-                                                    <div class="w-2 h-2 rounded-full" :class="selectedAdmins.includes('{{ Auth::user()->id }}') ? 'bg-blue-500 shadow-[0_0_10px_#2563eb]' : 'bg-slate-700'"></div>
+                                                    <div class="w-2 h-2 rounded-full flex-shrink-0" :class="selectedAdmins.includes('{{ Auth::user()->id }}') ? 'bg-blue-500 shadow-[0_0_10px_#2563eb]' : 'bg-slate-700'"></div>
                                                 </div>
                                             </div>
                                         </label>
@@ -1554,18 +1554,18 @@
                                             x-transition:enter="transition ease-out duration-300"
                                             x-transition:enter-start="opacity-0 -translate-y-2"
                                             x-transition:enter-end="opacity-100 translate-y-0"
-                                            class="mt-2 ml-4 p-4 bg-slate-950/40 border border-white/5 rounded-2xl space-y-3">
+                                            class="mt-2 ml-1 sm:ml-4 p-3 sm:p-4 bg-slate-950/40 border border-white/5 rounded-xl sm:rounded-2xl space-y-3">
 
-                                            <div class="flex items-center gap-4">
-                                                <span class="text-[10px] uppercase font-black tracking-wider text-slate-400">Pilih Peran Kerja:</span>
-                                                <div class="flex gap-2">
+                                            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                                                <span class="text-[9px] sm:text-[10px] uppercase font-black tracking-wider text-slate-400 flex-shrink-0">Pilih Peran:</span>
+                                                <div class="flex flex-wrap gap-2 flex-1">
                                                     <button type="button" @click="roles['{{ Auth::user()->id }}'] = 'pelaksana'"
-                                                        class="px-3 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wider transition-all border"
+                                                        class="px-3 py-1.5 rounded-lg text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider transition-all border flex-1 sm:flex-none text-center truncate"
                                                         :class="roles['{{ Auth::user()->id }}'] == 'pelaksana' ? 'bg-red-500 text-white border-transparent' : 'bg-slate-800 text-slate-400 border-white/5'">
                                                         Pelaksana
                                                     </button>
                                                     <button type="button" @click="roles['{{ Auth::user()->id }}'] = 'pemantau'"
-                                                        class="px-3 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wider transition-all border"
+                                                        class="px-3 py-1.5 rounded-lg text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider transition-all border flex-1 sm:flex-none text-center truncate"
                                                         :class="roles['{{ Auth::user()->id }}'] == 'pemantau' ? 'bg-blue-500 text-white border-transparent' : 'bg-slate-800 text-slate-400 border-white/5'">
                                                         Pemantau
                                                     </button>
@@ -1573,22 +1573,22 @@
                                                 <input type="hidden" :name="'peran['+{{ Auth::user()->id }}+']'" x-model="roles['{{ Auth::user()->id }}']">
                                             </div>
 
-                                            <div class="space-y-2">
-                                                <div class="flex items-center justify-between">
-                                                    <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Nama Ketua Tim / Keterangan Tugas (Opsional)</label>
+                                            <div class="space-y-2 pt-1 sm:pt-0">
+                                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
+                                                    <label class="text-[8px] sm:text-[9px] font-bold text-slate-400 uppercase tracking-wider">Nama Ketua Tim / Ket. Tugas (Opsional)</label>
                                                     <button type="button" @click="if(teams['{{ Auth::user()->id }}']) teams['{{ Auth::user()->id }}'].push('')"
-                                                        class="px-2 py-1 bg-blue-500/20 hover:bg-blue-500/40 text-blue-400 text-[9px] font-black uppercase tracking-wider rounded-lg transition-colors flex items-center gap-1">
+                                                        class="px-2 py-1.5 sm:py-1 bg-blue-500/20 hover:bg-blue-500/40 text-blue-400 text-[8px] sm:text-[9px] font-black uppercase tracking-wider rounded-lg transition-colors flex items-center justify-center gap-1 w-full sm:w-auto">
                                                         <i class="fa-solid fa-plus text-[8px]"></i> Tambah
                                                     </button>
                                                 </div>
                                                 <div class="space-y-1.5">
                                                     <template x-for="(team, index) in teams['{{ Auth::user()->id }}']" :key="index">
                                                         <div class="flex items-center gap-2">
-                                                            <input type="text" :name="'ketua_tim['+{{ Auth::user()->id }}+'][]'" x-model="teams['{{ Auth::user()->id }}'][index]" placeholder="Masukkan nama ketua tim atau biarkan kosong jika mandiri..."
-                                                                class="w-full bg-slate-900 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500 transition-colors">
+                                                            <input type="text" :name="'ketua_tim['+{{ Auth::user()->id }}+'][]'" x-model="teams['{{ Auth::user()->id }}'][index]" placeholder="Masukkan nama ketua tim..."
+                                                                class="w-full bg-slate-900 border border-white/5 rounded-lg sm:rounded-xl px-3 py-2 sm:px-4 sm:py-2.5 text-[11px] sm:text-xs text-white focus:outline-none focus:border-blue-500 transition-colors">
                                                             <button type="button" x-show="teams['{{ Auth::user()->id }}'] && teams['{{ Auth::user()->id }}'].length > 1" @click="teams['{{ Auth::user()->id }}'].splice(index, 1)"
-                                                                class="p-2.5 bg-red-500/10 hover:bg-red-500/30 text-red-400 hover:text-red-300 rounded-xl transition-colors">
-                                                                <i class="fa-solid fa-trash-can text-xs"></i>
+                                                                class="p-2 sm:p-2.5 bg-red-500/10 hover:bg-red-500/30 text-red-400 hover:text-red-300 rounded-lg sm:rounded-xl transition-colors flex-shrink-0">
+                                                                <i class="fa-solid fa-trash-can text-[10px] sm:text-xs"></i>
                                                             </button>
                                                         </div>
                                                     </template>
@@ -1604,22 +1604,22 @@
                                                 x-model="selectedAdmins"
                                                 @change="if(selectedAdmins.includes('{{ $user->id }}')) { roles['{{ $user->id }}'] = 'pelaksana'; if(!teams['{{ $user->id }}']) teams['{{ $user->id }}'] = ['']; }"
                                                 class="hidden">
-                                            <div class="p-4 rounded-[1.5rem] border-2 transition-all duration-500 flex flex-col gap-3"
+                                            <div class="p-3 sm:p-4 rounded-[1.25rem] sm:rounded-[1.5rem] border-2 transition-all duration-500 flex flex-col gap-3"
                                                 :class="selectedAdmins.includes('{{ $user->id }}') ? 'bg-emerald-500/10 border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.15)] scale-[1.01]' : 'bg-slate-800/30 border-white/5 hover:border-white/20'">
-                                                <div class="flex items-center justify-between">
-                                                    <div class="flex items-center gap-4">
-                                                        <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-all"
+                                                <div class="flex items-center justify-between gap-3">
+                                                    <div class="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+                                                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center transition-all flex-shrink-0"
                                                             :class="selectedAdmins.includes('{{ $user->id }}') ? 'bg-emerald-500 text-white shadow-lg' : 'bg-slate-700 text-slate-500'">
-                                                            <i class="fa-solid fa-user-check text-xs"></i>
+                                                            <i class="fa-solid fa-user-check text-[10px] sm:text-xs"></i>
                                                         </div>
-                                                        <div class="overflow-hidden">
-                                                            <p class="text-[11px] font-black truncate uppercase tracking-tighter" :class="selectedAdmins.includes('{{ $user->id }}') ? 'text-white' : 'text-slate-400'">
+                                                        <div class="flex-1 min-w-0">
+                                                            <p class="text-[10px] sm:text-[11px] font-black truncate uppercase tracking-tighter" :class="selectedAdmins.includes('{{ $user->id }}') ? 'text-white' : 'text-slate-400'">
                                                                 {{ $user->nama }}
                                                             </p>
-                                                            <p class="text-[8px] uppercase tracking-[0.1em] text-slate-600 font-bold mt-0.5">{{ $user->role }}</p>
+                                                            <p class="text-[7px] sm:text-[8px] uppercase tracking-[0.1em] text-slate-600 font-bold mt-0.5 truncate">{{ $user->role }}</p>
                                                         </div>
                                                     </div>
-                                                    <div class="w-2 h-2 rounded-full" :class="selectedAdmins.includes('{{ $user->id }}') ? 'bg-emerald-500 shadow-[0_0_10px_#10b981]' : 'bg-slate-700'"></div>
+                                                    <div class="w-2 h-2 rounded-full flex-shrink-0" :class="selectedAdmins.includes('{{ $user->id }}') ? 'bg-emerald-500 shadow-[0_0_10px_#10b981]' : 'bg-slate-700'"></div>
                                                 </div>
                                             </div>
                                         </label>
@@ -1628,18 +1628,18 @@
                                             x-transition:enter="transition ease-out duration-300"
                                             x-transition:enter-start="opacity-0 -translate-y-2"
                                             x-transition:enter-end="opacity-100 translate-y-0"
-                                            class="mt-2 ml-4 p-4 bg-slate-950/40 border border-white/5 rounded-2xl space-y-3">
+                                            class="mt-2 ml-1 sm:ml-4 p-3 sm:p-4 bg-slate-950/40 border border-white/5 rounded-xl sm:rounded-2xl space-y-3">
 
-                                            <div class="flex items-center gap-4">
-                                                <span class="text-[10px] uppercase font-black tracking-wider text-slate-400">Pilih Peran Kerja:</span>
-                                                <div class="flex gap-2">
+                                            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                                                <span class="text-[9px] sm:text-[10px] uppercase font-black tracking-wider text-slate-400 flex-shrink-0">Pilih Peran:</span>
+                                                <div class="flex flex-wrap gap-2 flex-1">
                                                     <button type="button" @click="roles['{{ $user->id }}'] = 'pelaksana'"
-                                                        class="px-3 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wider transition-all border"
+                                                        class="px-3 py-1.5 rounded-lg text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider transition-all border flex-1 sm:flex-none text-center truncate"
                                                         :class="roles['{{ $user->id }}'] == 'pelaksana' ? 'bg-red-500 text-white border-transparent' : 'bg-slate-800 text-slate-400 border-white/5'">
                                                         Pelaksana
                                                     </button>
                                                     <button type="button" @click="roles['{{ $user->id }}'] = 'pemantau'"
-                                                        class="px-3 py-1.5 rounded-lg text-[9px] font-extrabold uppercase tracking-wider transition-all border"
+                                                        class="px-3 py-1.5 rounded-lg text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider transition-all border flex-1 sm:flex-none text-center truncate"
                                                         :class="roles['{{ $user->id }}'] == 'pemantau' ? 'bg-blue-500 text-white border-transparent' : 'bg-slate-800 text-slate-400 border-white/5'">
                                                         Pemantau
                                                     </button>
@@ -1647,22 +1647,22 @@
                                                 <input type="hidden" :name="'peran['+'{{ $user->id }}'+']'" x-model="roles['{{ $user->id }}']">
                                             </div>
 
-                                            <div class="space-y-2">
-                                                <div class="flex items-center justify-between">
-                                                    <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Nama Ketua Tim / Keterangan Tugas (Opsional)</label>
+                                            <div class="space-y-2 pt-1 sm:pt-0">
+                                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
+                                                    <label class="text-[8px] sm:text-[9px] font-bold text-slate-400 uppercase tracking-wider">Nama Ketua Tim / Ket. Tugas (Opsional)</label>
                                                     <button type="button" @click="if(teams['{{ $user->id }}']) teams['{{ $user->id }}'].push('')"
-                                                        class="px-2 py-1 bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 text-[9px] font-black uppercase tracking-wider rounded-lg transition-colors flex items-center gap-1">
+                                                        class="px-2 py-1.5 sm:py-1 bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 text-[8px] sm:text-[9px] font-black uppercase tracking-wider rounded-lg transition-colors flex items-center justify-center gap-1 w-full sm:w-auto">
                                                         <i class="fa-solid fa-plus text-[8px]"></i> Tambah
                                                     </button>
                                                 </div>
                                                 <div class="space-y-1.5">
                                                     <template x-for="(team, index) in teams['{{ $user->id }}']" :key="index">
                                                         <div class="flex items-center gap-2">
-                                                            <input type="text" :name="'ketua_tim['+'{{ $user->id }}'+'][]'" x-model="teams['{{ $user->id }}'][index]" placeholder="Ketik nama Ketua Tim pelaksana tugas..."
-                                                                class="w-full bg-slate-900 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 transition-colors">
+                                                            <input type="text" :name="'ketua_tim['+'{{ $user->id }}'+'][]'" x-model="teams['{{ $user->id }}'][index]" placeholder="Ketik nama Ketua Tim..."
+                                                                class="w-full bg-slate-900 border border-white/5 rounded-lg sm:rounded-xl px-3 py-2 sm:px-4 sm:py-2.5 text-[11px] sm:text-xs text-white focus:outline-none focus:border-emerald-500 transition-colors">
                                                             <button type="button" x-show="teams['{{ $user->id }}'] && teams['{{ Auth::user()->id }}'].length > 1" @click="teams['{{ $user->id }}'].splice(index, 1)"
-                                                                class="p-2.5 bg-red-500/10 hover:bg-red-500/30 text-red-400 hover:text-red-300 rounded-xl transition-colors">
-                                                                <i class="fa-solid fa-trash-can text-xs"></i>
+                                                                class="p-2 sm:p-2.5 bg-red-500/10 hover:bg-red-500/30 text-red-400 hover:text-red-300 rounded-lg sm:rounded-xl transition-colors flex-shrink-0">
+                                                                <i class="fa-solid fa-trash-can text-[10px] sm:text-xs"></i>
                                                             </button>
                                                         </div>
                                                     </template>
@@ -1674,11 +1674,11 @@
                                 </div>
                             </div>
 
-                            <div class="space-y-5">
+                            <div class="space-y-4 sm:space-y-5">
                                 <div class="flex items-center gap-3 ml-1">
-                                    <span class="w-8 h-[2px] bg-amber-500"></span>
-                                    <label class="text-[10px] font-black text-amber-500 uppercase tracking-[0.4em]">Instruksi Catatan</label>
-                                    <span class="text-[9px] font-mono text-amber-500/50 uppercase" x-text="instruksi.length + ' dipilih'"></span>
+                                    <span class="w-6 sm:w-8 h-[2px] bg-amber-500"></span>
+                                    <label class="text-[9px] sm:text-[10px] font-black text-amber-500 uppercase tracking-[0.3em] sm:tracking-[0.4em]">Instruksi Catatan</label>
+                                    <span class="text-[8px] sm:text-[9px] font-mono text-amber-500/50 uppercase" x-text="instruksi.length + ' dipilih'"></span>
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -1695,11 +1695,11 @@
                                     @foreach($list_instruksi as $item)
                                     <label class="cursor-pointer">
                                         <input type="checkbox" name="instruksi[]" value="{{ $item }}" x-model="instruksi" class="hidden">
-                                        <div class="h-full px-4 py-3 rounded-xl border text-[10px] font-bold transition-all duration-300 flex items-center gap-3"
+                                        <div class="h-full px-3 py-2.5 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl border text-[9.5px] sm:text-[10px] font-bold transition-all duration-300 flex items-center gap-3"
                                             :class="instruksi.includes('{{ $item }}') 
                             ? 'bg-gradient-to-br from-amber-500 to-orange-600 border-transparent text-slate-950 shadow-lg shadow-amber-500/20' 
                             : 'bg-slate-800/40 border-white/5 text-slate-400 hover:border-white/20 hover:text-white'">
-                                            <i class="fa-solid text-[12px]" :class="instruksi.includes('{{ $item }}') ? 'fa-circle-check' : 'fa-circle opacity-20'"></i>
+                                            <i class="fa-solid text-[10px] sm:text-[12px] flex-shrink-0" :class="instruksi.includes('{{ $item }}') ? 'fa-circle-check' : 'fa-circle opacity-20'"></i>
                                             <span class="truncate">{{ $item }}</span>
                                         </div>
                                     </label>
@@ -1707,50 +1707,50 @@
                                 </div>
                             </div>
 
-                            <div class="space-y-4">
+                            <div class="space-y-3 sm:space-y-4">
                                 <div class="flex items-center gap-3 ml-1">
-                                    <span class="w-8 h-[2px] bg-blue-400"></span>
-                                    <label class="text-[10px] font-black text-blue-400 uppercase tracking-[0.4em]">Lampiran Disposisi (PDF/DOCX Max 1MB)</label>
+                                    <span class="w-6 sm:w-8 h-[2px] bg-blue-400"></span>
+                                    <label class="text-[9px] sm:text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] sm:tracking-[0.4em]">Lampiran Disposisi (Max 1MB)</label>
                                 </div>
-                                <div class="relative group h-32">
+                                <div class="relative group h-28 sm:h-32">
                                     <input type="file" name="file_disposisi" required
                                         accept=".pdf,.doc,.docx"
                                         @change="
-        if (validateDisposisiFile($event)) {
-            isUploading = true;
-            fileName = $event.target.files[0].name;
-        } else {
-            isUploading = false;
-            fileName = '';
-        }
-    "
+                            if (validateDisposisiFile($event)) {
+                                isUploading = true;
+                                fileName = $event.target.files[0].name;
+                            } else {
+                                isUploading = false;
+                                fileName = '';
+                            }
+                        "
                                         class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                                    <div class="h-full p-6 rounded-[2rem] border-2 border-dashed transition-all flex flex-col items-center justify-center bg-slate-950/20"
+                                    <div class="h-full p-4 sm:p-6 rounded-2xl sm:rounded-[2rem] border-2 border-dashed transition-all flex flex-col items-center justify-center bg-slate-950/20 px-2 text-center"
                                         :class="isUploading ? 'border-emerald-500/50 bg-emerald-500/5' : 'border-white/5 group-hover:border-blue-500/30 group-hover:bg-blue-500/5'">
 
-                                        <div x-show="!isUploading" class="text-center">
-                                            <i class="fa-solid fa-cloud-arrow-up text-2xl mb-2 text-slate-700 group-hover:text-blue-500 transition-colors"></i>
-                                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-500">PDF atau Word (Maks 1MB)</p>
+                                        <div x-show="!isUploading" class="flex flex-col items-center">
+                                            <i class="fa-solid fa-cloud-arrow-up text-xl sm:text-2xl mb-1.5 sm:mb-2 text-slate-700 group-hover:text-blue-500 transition-colors"></i>
+                                            <p class="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500">PDF atau Word (Maks 1MB)</p>
                                         </div>
 
-                                        <div x-show="isUploading" x-cloak class="text-center">
-                                            <i class="fa-solid fa-file-circle-check text-2xl mb-2 text-emerald-500"></i>
-                                            <p class="text-[10px] font-black uppercase tracking-widest text-emerald-400" x-text="fileName"></p>
+                                        <div x-show="isUploading" x-cloak class="flex flex-col items-center w-full px-4">
+                                            <i class="fa-solid fa-file-circle-check text-xl sm:text-2xl mb-1.5 sm:mb-2 text-emerald-500"></i>
+                                            <p class="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-emerald-400 truncate w-full" x-text="fileName"></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="p-8 bg-white/[0.02] border-t border-white/5 grid grid-cols-3 gap-4 flex-shrink-0">
+                        <div class="p-5 sm:p-8 bg-white/[0.02] border-t border-white/5 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 flex-shrink-0">
                             <button type="button" @click="showModal = false"
-                                class="px-6 py-4 bg-slate-800/50 text-slate-500 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:text-white transition-all">
+                                class="order-2 sm:order-1 px-4 py-3 sm:px-6 sm:py-4 bg-slate-800/50 text-slate-500 rounded-xl sm:rounded-2xl font-black text-[9px] sm:text-[10px] uppercase tracking-widest hover:text-white transition-all w-full">
                                 Batal
                             </button>
                             <button type="submit"
                                 :disabled="!selectedSurat || selectedAdmins.length === 0 || instruksi.length === 0"
                                 :class="(!selectedSurat || selectedAdmins.length === 0 || instruksi.length === 0) ? 'opacity-50 cursor-not-allowed' : ''"
-                                class="col-span-2 px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center">
+                                class="order-1 sm:order-2 sm:col-span-2 px-4 py-3 sm:px-6 sm:py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl sm:rounded-2xl font-black text-[9px] sm:text-[10px] uppercase tracking-widest transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center w-full">
                                 Proses Disposisi <i class="fa-solid fa-paper-plane ml-2"></i>
                             </button>
                         </div>
