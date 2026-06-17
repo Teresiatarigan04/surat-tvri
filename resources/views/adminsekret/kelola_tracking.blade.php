@@ -548,9 +548,6 @@
                             <button @click="fetchDetail({{ $surat->id }})" class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center">
                                 <i class="fa-solid fa-route text-sm"></i>
                             </button>
-                            <button @click="confirmDelete({{ $surat->id }})" class="w-10 h-10 rounded-xl bg-red-50 border border-red-200 text-red-600 flex items-center justify-center">
-                                <i class="fa-solid fa-trash-can text-sm"></i>
-                            </button>
                         </div>
                     </div>
                     @endforeach
