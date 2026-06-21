@@ -502,21 +502,74 @@
                 <i class="fa-solid fa-user-shield text-blue-500 text-sm"></i> Registrasi Akses Baru
             </h3>
 
-            <form action="{{ route('kelola-akun.store') }}" method="POST" class="space-y-5">
+            <form
+                id="registrationForm"
+                action="{{ route('kelola-akun.store') }}"
+                method="POST"
+                class="space-y-5"
+                x-data="{ 
+                    showPassword: false, 
+                    nama: '',
+                    username: '',
+                    password: '',
+                    isFormValid: false,
+                    validateForm() {
+                        // Memeriksa apakah element form memenuhi semua aturan HTML5 (required, minlength, dll)
+                        this.isFormValid = $el.checkValidity();
+                    }
+                }"
+                @input="validateForm()"
+                @init="validateForm()">
                 @csrf
                 <div>
                     <label class="text-[10px] font-bold text-slate-500 ml-2 uppercase tracking-tighter">Nama Lengkap</label>
-                    <input type="text" name="nama" required placeholder="Masukkan Nama Lengkap" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all">
+                    <input
+                        type="text"
+                        name="nama"
+                        x-model="nama"
+                        required
+                        placeholder="Masukkan Nama Lengkap"
+                        class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all">
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="text-[10px] font-bold text-slate-500 ml-2 uppercase tracking-tighter">Username</label>
-                        <input type="text" name="username" required placeholder="username_login" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all">
+                        <input
+                            type="text"
+                            name="username"
+                            x-model="username"
+                            required
+                            placeholder="username_login"
+                            class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all">
                     </div>
+
                     <div>
                         <label class="text-[10px] font-bold text-slate-500 ml-2 uppercase tracking-tighter">Password</label>
-                        <input type="password" name="password" required placeholder="******" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all">
+                        <div class="relative">
+                            <input
+                                :type="showPassword ? 'text' : 'password'"
+                                x-model="password"
+                                name="password"
+                                required
+                                minlength="6"
+                                placeholder="******"
+                                class="w-full bg-white/5 border border-white/10 rounded-2xl pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all"
+                                :class="password.length > 0 && password.length < 6 ? 'border-red-500/50 focus:border-red-500' : ''">
+                            <button
+                                type="button"
+                                @click="showPassword = !showPassword"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors focus:outline-none">
+                                <i class="fa-solid" :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                            </button>
+                        </div>
+
+                        <span
+                            x-show="password.length > 0 && password.length < 6"
+                            x-transition
+                            class="text-[10px] font-semibold text-red-400 ml-2 mt-1 block tracking-wide">
+                            * Password harus minimal 6 karakter!
+                        </span>
                     </div>
                 </div>
 
@@ -545,7 +598,16 @@
 
                 <div class="flex gap-3 mt-8">
                     <button type="button" @click="addModal = false" class="flex-1 py-4 bg-white/5 text-slate-400 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/10 transition-all border border-white/5">Batal</button>
-                    <button type="submit" class="flex-1 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:scale-[1.02] shadow-lg shadow-blue-600/20 transition-all active:scale-95">Daftarkan User</button>
+
+                    <button
+                        type="submit"
+                        :disabled="!isFormValid"
+                        class="flex-1 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all"
+                        :class="isFormValid 
+                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:scale-[1.02] shadow-lg shadow-blue-600/20 active:scale-95 cursor-pointer' 
+                            : 'bg-white/5 text-slate-600 border border-white/5 cursor-not-allowed opacity-50'">
+                        Daftarkan User
+                    </button>
                 </div>
             </form>
         </div>
