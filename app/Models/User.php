@@ -13,7 +13,7 @@ class User extends Authenticatable
 
     /**
      * Atribut yang bisa diisi secara massal.
-     * Kita ganti 'name' dan 'email' menjadi 'username' dan tambahkan 'role'.
+     * 
      */
     protected $fillable = [
         'username', // Ganti email jadi username
