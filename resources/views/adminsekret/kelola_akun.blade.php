@@ -418,30 +418,41 @@
                     <h3 class="text-[11px] font-black text-emerald-600 uppercase tracking-[0.2em] flex items-center gap-2 px-2 italic">
                         <i class="fa-solid fa-building-user"></i> Admin Divisi
                     </h3>
-                    <div class="bg-white rounded-[35px] overflow-hidden border-2 border-slate-200 shadow-sm transition-all hover:shadow-md">
-                        <table class="w-full text-left border-collapse">
+
+                    <div class="bg-white rounded-[20px] sm:rounded-[35px] overflow-hidden border-2 border-slate-200 shadow-sm transition-all hover:shadow-md">
+
+                        <table class="w-full text-left border-collapse table-fixed">
                             <thead>
                                 <tr class="bg-slate-900">
-                                    <th class="p-5 text-[10px] font-black text-blue-400 uppercase tracking-widest text-center w-16">No</th>
-                                    <th class="p-5 text-[10px] font-black text-blue-400 uppercase tracking-widest">Informasi Akun</th>
-                                    <th class="p-5 text-[10px] font-black text-blue-400 uppercase tracking-widest text-center">Aksi</th>
+                                    <th class="py-3 px-1 sm:p-5 text-[8px] sm:text-[10px] font-black text-blue-400 uppercase tracking-widest text-center w-8 sm:w-16">No</th>
+                                    <th class="py-3 px-2 sm:p-5 text-[8px] sm:text-[10px] font-black text-blue-400 uppercase tracking-widest">Informasi Akun</th>
+                                    <th class="py-3 px-1 sm:p-5 text-[8px] sm:text-[10px] font-black text-blue-400 uppercase tracking-widest text-center w-[72px] sm:w-28">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
                                 @foreach($adminDivisi as $index => $u)
                                 <tr class="hover:bg-slate-50 transition-all group">
-                                    <td class="p-5 text-center font-black text-slate-400 text-xs">{{ $index + 1 }}</td>
-                                    <td class="p-5">
-                                        <p class="text-sm font-black text-slate-900 tracking-tight uppercase italic transition-colors group-hover:text-blue-600">{{ $u->nama }}</p>
-                                        <p class="text-[10px] text-slate-400 mt-1 font-bold">@ {{ $u->username }}</p>
+
+                                    <td class="py-3 px-1 sm:p-5 text-center font-black text-slate-400 text-[10px] sm:text-xs">
+                                        {{ $index + 1 }}
                                     </td>
-                                    <td class="p-5">
-                                        <div class="flex items-center justify-center gap-2">
-                                            <button @click="selectedUser = {{ json_encode($u) }}; editModal = true" class="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-all shadow-sm active:scale-90">
-                                                <i class="fa-solid fa-user-pen text-xs"></i>
+
+                                    <td class="py-3 px-2 sm:p-5 overflow-hidden">
+                                        <p class="text-[10px] sm:text-sm font-black text-slate-900 tracking-tight uppercase italic transition-colors group-hover:text-blue-600 truncate">
+                                            {{ $u->nama }}
+                                        </p>
+                                        <p class="text-[9px] sm:text-[10px] text-slate-400 mt-0.5 sm:mt-1 font-bold truncate">
+                                            @ {{ $u->username }}
+                                        </p>
+                                    </td>
+
+                                    <td class="py-3 px-1 sm:p-5">
+                                        <div class="flex items-center justify-center gap-1 sm:gap-2">
+                                            <button @click="selectedUser = {{ json_encode($u) }}; editModal = true" class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-all shadow-sm active:scale-90 shrink-0">
+                                                <i class="fa-solid fa-user-pen text-[9px] sm:text-xs"></i>
                                             </button>
-                                            <button onclick="confirmDelete('{{ $u->id }}', '{{ $u->username }}')" class="w-9 h-9 rounded-xl bg-red-50 border border-red-200 text-red-600 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all shadow-sm active:scale-90">
-                                                <i class="fa-solid fa-trash-can text-xs"></i>
+                                            <button onclick="confirmDelete('{{ $u->id }}', '{{ $u->username }}')" class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-red-50 border border-red-200 text-red-600 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all shadow-sm active:scale-90 shrink-0">
+                                                <i class="fa-solid fa-trash-can text-[9px] sm:text-xs"></i>
                                             </button>
                                         </div>
                                     </td>
