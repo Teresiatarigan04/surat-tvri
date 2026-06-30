@@ -433,7 +433,7 @@
                                                             <i class="fa-solid fa-file-signature text-xs"></i>
                                                         </div>
                                                         <div>
-                                                            <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest">Detail Arsip Surat Masuk</h3>
+                                                            <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest">Detail Riwayat Surat Masuk</h3>
                                                             <p class="text-[10px] text-emerald-600 font-bold leading-none mt-1" x-text="selectedSurat.no || '-'"></p>
                                                         </div>
                                                     </div>
