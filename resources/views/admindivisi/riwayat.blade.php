@@ -378,20 +378,25 @@
                                         <span class="text-[10px] font-black uppercase tracking-widest">{{ $statusCfg['label'] }}</span>
                                     </div>
                                 </td>
-                                <td class="px-6 py-6 text-right">
-                                    <div class="flex items-center justify-end gap-2">
-                                        <button @click='selectedSurat = {!! $detailData !!}; detailModal = true'
-                                            class="h-10 px-4 rounded-xl bg-emerald-500 text-white hover:bg-emerald-600 transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest shadow-md shadow-emerald-500/20">
-                                            <i class="fa-solid fa-circle-info"></i> DETAIL
-                                        </button>
+                                <td class="px-6 py-6 text-right"
+                                    x-data="{ 
+        showDetail: false, 
+        selectedSurat: {}, 
+        pdfUrl: '' 
+    }">
 
+                                    <div class="flex items-center justify-end gap-2">
                                         @php
                                         $safeFilePath = asset('uploads/surat_masuk/' . rawurlencode($surat->file_surat));
                                         @endphp
 
-                                        <button onclick="previewFile('{{ $safeFilePath }}')"
-                                            class="h-10 px-4 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest">
-                                            <i class="fa-solid fa-eye text-emerald-500"></i> LIHAT
+                                        <button @click="
+                selectedSurat = {{ $detailData }}; 
+                pdfUrl = '{{ $safeFilePath }}'; 
+                showDetail = true;
+            "
+                                            class="h-10 px-4 rounded-xl bg-emerald-500 text-white hover:bg-emerald-600 transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest shadow-md shadow-emerald-500/20">
+                                            <i class="fa-solid fa-folder-open"></i> DETAIL
                                         </button>
 
                                         <a href="{{ $safeFilePath }}" download
@@ -399,6 +404,146 @@
                                             <i class="fa-solid fa-download text-sm"></i>
                                         </a>
                                     </div>
+
+                                    <template x-teleport="body">
+                                        <div x-show="showDetail"
+                                            x-cloak
+                                            class="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-6 lg:p-10"
+                                            style="display: none;">
+
+                                            <div x-show="showDetail"
+                                                x-transition:enter="transition opacity-out duration-300"
+                                                x-transition:enter-start="opacity-0"
+                                                x-transition:enter-end="opacity-100"
+                                                x-transition:leave="transition opacity-in duration-200"
+                                                class="absolute inset-0 bg-slate-900/40 backdrop-blur-md"
+                                                @click="showDetail = false"></div>
+
+                                            <div x-show="showDetail"
+                                                x-transition:enter="transition ease-out duration-300"
+                                                x-transition:enter-start="opacity-0 translate-y-8 scale-95"
+                                                x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                                x-transition:leave="transition ease-in duration-200"
+                                                x-data="{ activeTab: 'info' }"
+                                                class="relative bg-white border border-slate-200 w-full h-full md:h-[90vh] md:max-w-6xl md:rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.2)] overflow-hidden flex flex-col">
+
+                                                <div class="shrink-0 px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-600 border border-emerald-500/20">
+                                                            <i class="fa-solid fa-file-signature text-xs"></i>
+                                                        </div>
+                                                        <div>
+                                                            <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest">Detail Arsip Surat Masuk</h3>
+                                                            <p class="text-[10px] text-emerald-600 font-bold leading-none mt-1" x-text="selectedSurat.no || '-'"></p>
+                                                        </div>
+                                                    </div>
+                                                    <button @click="showDetail = false" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all shadow-sm">
+                                                        <i class="fa-solid fa-xmark text-lg"></i>
+                                                    </button>
+                                                </div>
+
+                                                <div class="flex md:hidden bg-slate-100/50 border-b border-slate-100 p-1.5">
+                                                    <button @click="activeTab = 'info'"
+                                                        :class="activeTab === 'info' ? 'bg-white text-emerald-600 shadow-sm border-slate-200' : 'text-slate-500 border-transparent'"
+                                                        class="flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all duration-300 border">
+                                                        <i class="fa-solid fa-circle-info mr-2"></i>Informasi
+                                                    </button>
+                                                    <button @click="activeTab = 'pdf'"
+                                                        :class="activeTab === 'pdf' ? 'bg-white text-emerald-600 shadow-sm border-slate-200' : 'text-slate-500 border-transparent'"
+                                                        class="flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all duration-300 border">
+                                                        <i class="fa-solid fa-file-pdf mr-2"></i>Preview PDF
+                                                    </button>
+                                                </div>
+
+                                                <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+
+                                                    <div :class="activeTab === 'info' ? 'flex' : 'hidden md:flex'"
+                                                        class="w-full md:w-[420px] flex-col p-6 md:p-8 overflow-y-auto border-r border-slate-100 bg-white">
+
+                                                        <div class="space-y-6">
+                                                            <div class="p-5 rounded-2xl bg-emerald-50 border border-emerald-100/50">
+                                                                <span class="text-[8px] font-black text-emerald-600 uppercase tracking-[0.2em] block mb-2 italic">Nomor Surat</span>
+                                                                <p class="text-sm font-black text-slate-800 break-words tracking-tight" x-text="selectedSurat.no || '-'"></p>
+                                                            </div>
+
+                                                            <div class="space-y-5">
+                                                                <div>
+                                                                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Pengirim / Tujuan</label>
+                                                                    <div class="flex items-start gap-3">
+                                                                        <div class="mt-1 w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                                                                        <p class="text-xs font-bold text-slate-700 uppercase leading-relaxed" x-text="selectedSurat.tujuan || '-'"></p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div>
+                                                                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Perihal Surat</label>
+                                                                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 italic relative">
+                                                                        <i class="fa-solid fa-quote-left absolute -top-2 -left-1 text-slate-200 text-xl"></i>
+                                                                        <p class="text-xs font-medium text-slate-600 leading-relaxed uppercase" x-text="selectedSurat.perihal || '-'"></p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div>
+                                                                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Catatan / Keterangan</label>
+                                                                    <div class="p-4 rounded-2xl bg-white border border-dashed border-slate-200">
+                                                                        <p class="text-xs text-slate-500 italic leading-relaxed" x-text="selectedSurat.ket || 'Tidak ada catatan.'"></p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="grid grid-cols-2 gap-4">
+                                                                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                                                                        <span class="text-[8px] text-slate-400 font-bold uppercase block mb-1">Status Dokumen</span>
+                                                                        <div class="flex items-center gap-2">
+                                                                            <span class="w-2 h-2 rounded-full animate-pulse bg-emerald-500"></span>
+                                                                            <span class="text-[10px] font-black text-emerald-600 uppercase italic" x-text="selectedSurat.status"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                                                                        <span class="text-[8px] text-slate-400 font-bold uppercase block mb-1">Tanggal Pengajuan</span>
+                                                                        <div class="flex items-center gap-2 text-slate-700">
+                                                                            <i class="fa-regular fa-calendar text-[10px]"></i>
+                                                                            <span class="text-[10px] font-black uppercase" x-text="selectedSurat.tgl"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="pt-6 mt-auto">
+                                                                <a :href="pdfUrl" download
+                                                                    class="flex items-center justify-center gap-3 bg-slate-900 hover:bg-emerald-600 text-white w-full py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 shadow-lg shadow-slate-200 active:scale-95">
+                                                                    <i class="fa-solid fa-cloud-arrow-down text-sm"></i> Unduh Dokumen
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div :class="activeTab === 'pdf' ? 'flex' : 'hidden md:flex'"
+                                                        class="flex-1 bg-slate-100/50 relative flex flex-col">
+
+                                                        <div class="absolute inset-0 flex items-center justify-center">
+                                                            <div class="flex flex-col items-center gap-3">
+                                                                <div class="w-10 h-10 border-[3px] border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin"></div>
+                                                                <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Menyiapkan Preview...</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="relative z-10 w-full h-full p-3 md:p-6 lg:p-8">
+                                                            <template x-if="pdfUrl">
+                                                                <iframe :src="pdfUrl + '#toolbar=0&navpanes=0&view=FitH'"
+                                                                    class="w-full h-full rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] border border-slate-200 bg-white">
+                                                                </iframe>
+                                                            </template>
+                                                        </div>
+
+                                                        <div class="hidden md:flex absolute bottom-10 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur px-4 py-2 rounded-full border border-slate-200 shadow-sm z-20 items-center gap-3">
+                                                            <span class="text-[8px] font-black text-slate-500 uppercase tracking-widest">Document Preview Mode</span>
+                                                            <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
                                 </td>
                             </tr>
                             @endforeach
@@ -414,80 +559,8 @@
         </div>
     </main>
 
-    <!-- Modal Detail: Background Backdrop Lebih Terang -->
-    <div x-show="detailModal"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0"
-        class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md" x-cloak>
 
-        <!-- Card Modal: Putih Bersih -->
-        <div @click.away="detailModal = false"
-            x-show="detailModal"
-            x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0 scale-95 translate-y-8"
-            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-            class="w-full max-w-lg bg-white rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-slate-100">
 
-            <!-- Header Modal -->
-            <div class="relative p-8 bg-emerald-50/50 border-b border-slate-100">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-1">Informasi Detail</p>
-                        <h2 class="text-2xl font-black text-slate-900 uppercase tracking-tighter" x-text="selectedSurat.no"></h2>
-                    </div>
-                    <button @click="detailModal = false" class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:border-rose-200 transition-all shadow-sm">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Body Modal -->
-            <div class="p-8 space-y-6">
-                <div class="grid grid-cols-2 gap-6">
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Tanggal Pengajuan</label>
-                        <p class="text-sm font-bold text-slate-800" x-text="selectedSurat.tgl"></p>
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Status Saat Ini</label>
-                        <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <span class="text-xs font-black text-emerald-600 uppercase tracking-widest" x-text="selectedSurat.status"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-4">
-                    <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1.5">Perihal Surat</label>
-                        <p class="text-sm font-bold text-slate-800 leading-relaxed uppercase" x-text="selectedSurat.perihal"></p>
-                    </div>
-
-                    <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1.5">Pengirim</label>
-                        <p class="text-sm font-bold text-slate-800 uppercase" x-text="selectedSurat.tujuan"></p>
-                    </div>
-
-                    <div class="p-5 rounded-2xl bg-white border border-dashed border-slate-200">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1.5">Catatan / Keterangan</label>
-                        <p class="text-xs text-slate-500 italic leading-relaxed" x-text="selectedSurat.ket"></p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer Modal -->
-            <div class="p-6 bg-slate-50 border-t border-slate-100 text-center">
-                <button @click="detailModal = false"
-                    class="w-full py-4 bg-white border border-slate-200 hover:bg-slate-900 hover:text-white hover:border-slate-900 text-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all shadow-sm">
-                    Tutup Detail
-                </button>
-            </div>
-        </div>
-    </div>
 
     <script>
         function confirmLogout() {

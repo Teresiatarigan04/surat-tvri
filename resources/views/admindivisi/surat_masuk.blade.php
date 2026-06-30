@@ -473,108 +473,150 @@
 
                     <!-- MODAL DETAIL (FIXED) -->
                     <template x-teleport="body">
-                        <!-- Container Utama Modal (Fixed menutupi seluruh layar) -->
                         <div x-show="detailModal"
-                            class="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 overflow-x-hidden overflow-y-auto"
-                            x-cloak>
+                            x-cloak
+                            class="fixed inset-0 z-[9999] flex items-center justify-center p-0 md:p-6 lg:p-10"
+                            style="display: none;">
 
-                            <!-- Backdrop background (Blur dan Transparan) -->
-                            <div x-show="detailModal"
-                                x-transition.opacity.duration.300ms
-                                class="fixed inset-0 bg-slate-950/70 backdrop-blur-md cursor-pointer"
-                                @click="detailModal = false"></div>
-
-                            <!-- Konten Modal (Card Putih) -->
                             <div x-show="detailModal"
                                 x-transition:enter="transition ease-out duration-300"
-                                x-transition:enter-start="opacity-0 scale-95 translate-y-4"
-                                x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                                x-transition:enter-start="opacity-0"
+                                x-transition:enter-end="opacity-100"
                                 x-transition:leave="transition ease-in duration-200"
-                                x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                                x-transition:leave-end="opacity-0 scale-95 translate-y-4"
+                                x-transition:leave-start="opacity-100"
+                                x-transition:leave-end="opacity-0"
+                                class="absolute inset-0 bg-slate-200/60 backdrop-blur-md cursor-pointer"
+                                @click="detailModal = false"></div>
+
+                            <div x-show="detailModal"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 translate-y-8 scale-95"
+                                x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                x-transition:leave="transition ease-in duration-200"
+                                x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                x-transition:leave-end="opacity-0 translate-y-8 scale-95"
+                                x-data="{ activeTab: 'info' }"
                                 @click.stop
-                                class="relative w-full max-w-2xl bg-white rounded-[32px] md:rounded-[48px] shadow-[0_25px_70px_-15px_rgba(0,0,0,0.5)] border border-slate-100 flex flex-col my-auto max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-3rem)] overflow-hidden z-10">
+                                class="relative bg-white border border-slate-200 w-full h-full md:h-[90vh] md:max-w-6xl md:rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col z-10">
 
-                                <!-- Header Modal (Tetap di atas, tidak ikut ter-scroll) -->
-                                <div class="p-6 md:p-10 bg-slate-900 text-white relative overflow-hidden shrink-0">
-                                    <!-- Tombol Close -->
-                                    <button @click="detailModal = false"
-                                        type="button"
-                                        class="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 bg-white/10 hover:bg-rose-500 text-white rounded-xl flex items-center justify-center transition-all duration-300 group z-50">
-                                        <i class="fa-solid fa-xmark text-lg group-hover:rotate-90 transition-transform duration-300"></i>
-                                    </button>
-
-                                    <!-- Informasi Header -->
-                                    <div class="relative z-10 pr-10">
-                                        <div class="flex items-center gap-3 mb-3">
-                                            <span class="px-3 py-1 bg-emerald-500 text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg shadow-emerald-500/20">Surat Detail</span>
-                                            <span class="text-slate-400 text-[10px] font-bold uppercase tracking-widest" x-text="selectedSurat.no_surat"></span>
+                                <div class="shrink-0 px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-600 border border-emerald-500/20">
+                                            <i class="fa-solid fa-envelope-open text-xs"></i>
                                         </div>
-                                        <h2 class="text-xl md:text-2xl font-black uppercase italic leading-tight tracking-tighter line-clamp-2" x-text="selectedSurat.perihal"></h2>
+                                        <div>
+                                            <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest">Surat Detail</h3>
+                                            <p class="text-[10px] text-emerald-600 font-bold leading-none mt-1" x-text="selectedSurat ? selectedSurat.no_surat : '-'"></p>
+                                        </div>
                                     </div>
-
-                                    <!-- Watermark Icon Background -->
-                                    <i class="fa-solid fa-envelope-open opacity-10 text-8xl absolute -bottom-8 -right-8 rotate-12 pointer-events-none"></i>
+                                    <button @click="detailModal = false" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 text-slate-400 hover:bg-rose-50 hover:text-rose-500 transition-all duration-300">
+                                        <i class="fa-solid fa-xmark text-lg"></i>
+                                    </button>
                                 </div>
 
-                                <!-- Body Modal (Bisa di-scroll ke bawah secara internal jika kontennya panjang) -->
-                                <div class="p-6 md:p-10 space-y-6 md:space-y-8 overflow-y-auto custom-scrollbar">
+                                <div class="flex md:hidden bg-slate-100/50 border-b border-slate-100 p-1.5 shrink-0">
+                                    <button @click="activeTab = 'info'"
+                                        :class="activeTab === 'info' ? 'bg-white text-emerald-600 shadow-sm border-slate-200' : 'text-slate-500 border-transparent'"
+                                        class="flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all duration-300 border">
+                                        <i class="fa-solid fa-circle-info mr-2"></i>Informasi
+                                    </button>
+                                    <button @click="activeTab = 'pdf'"
+                                        :class="activeTab === 'pdf' ? 'bg-white text-emerald-600 shadow-sm border-slate-200' : 'text-slate-500 border-transparent'"
+                                        class="flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all duration-300 border">
+                                        <i class="fa-solid fa-file-pdf mr-2"></i>Preview PDF
+                                    </button>
+                                </div>
 
-                                    <!-- Info Grid -->
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                        <div class="space-y-1">
-                                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                                                <i class="fa-solid fa-hashtag text-emerald-500"></i> Nomor Registrasi
-                                            </p>
-                                            <p class="font-black text-slate-900 text-base md:text-lg tracking-tight break-all" x-text="selectedSurat.no_surat"></p>
-                                        </div>
-                                        <div class="space-y-1">
-                                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                                                <i class="fa-solid fa-calendar-check text-emerald-500"></i> Tanggal Masuk
-                                            </p>
-                                            <p class="font-black text-slate-900 text-base md:text-lg tracking-tight"
-                                                x-text="selectedSurat.created_at ? new Date(selectedSurat.created_at).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}) : '-'">
-                                            </p>
+                                <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+
+                                    <div :class="activeTab === 'info' ? 'flex' : 'hidden md:flex'"
+                                        class="w-full md:w-[420px] flex-col p-6 md:p-8 overflow-y-auto border-r border-slate-100 bg-white min-h-0">
+
+                                        <div class="space-y-6 flex-1 flex flex-col justify-between">
+                                            <div class="space-y-6">
+                                                <div class="p-5 rounded-2xl bg-emerald-50 border border-emerald-100/50">
+                                                    <span class="text-[8px] font-black text-emerald-600 uppercase tracking-[0.2em] block mb-2 italic">Nomor Registrasi</span>
+                                                    <p class="text-sm font-black text-slate-800 break-words tracking-tight" x-text="selectedSurat ? selectedSurat.no_surat : '-'"></p>
+                                                </div>
+
+                                                <div class="space-y-5">
+                                                    <div>
+                                                        <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Nama Pengirim / Asal Surat</label>
+                                                        <div class="flex items-start gap-3">
+                                                            <div class="mt-1 w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></div>
+                                                            <p class="text-xs font-bold text-slate-700 uppercase leading-relaxed break-words"
+                                                                x-text="selectedSurat ? (selectedSurat.pengirim ? selectedSurat.pengirim.username : (selectedSurat.asal_surat ?? 'Tidak Diketahui')) : '-'"></p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Perihal Utama</label>
+                                                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 italic relative">
+                                                            <i class="fa-solid fa-quote-left absolute -top-2 -left-1 text-slate-200 text-xl"></i>
+                                                            <p class="text-xs font-medium text-slate-600 leading-relaxed break-words" x-text="selectedSurat ? selectedSurat.perihal : '-'"></p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="grid grid-cols-2 gap-4">
+                                                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                                                            <span class="text-[8px] text-slate-400 font-bold uppercase block mb-1">Status Dokumen</span>
+                                                            <div class="flex items-center gap-2">
+                                                                <span class="w-2 h-2 rounded-full animate-pulse bg-emerald-500"></span>
+                                                                <span class="text-[10px] font-black text-emerald-600 uppercase italic" x-text="selectedSurat && selectedSurat.status ? selectedSurat.status : 'Diterima'"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                                                            <span class="text-[8px] text-slate-400 font-bold uppercase block mb-1">Tanggal Masuk</span>
+                                                            <div class="flex items-center gap-2 text-slate-700">
+                                                                <i class="fa-regular fa-calendar text-[10px]"></i>
+                                                                <span class="text-[10px] font-black uppercase truncate"
+                                                                    x-text="selectedSurat && selectedSurat.created_at ? new Date(selectedSurat.created_at).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}) : '-'">
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="pt-6 mt-auto">
+                                                <template x-if="selectedSurat && selectedSurat.file_surat">
+                                                    <a :href="'/uploads/surat_sekret/' + selectedSurat.file_surat" download
+                                                        class="flex items-center justify-center gap-3 bg-slate-900 hover:bg-emerald-600 text-white w-full py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 shadow-lg shadow-slate-100 active:scale-95">
+                                                        <i class="fa-solid fa-cloud-arrow-down text-sm"></i> Unduh Dokumen Surat
+                                                    </a>
+                                                </template>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <!-- Info Pengirim & Perihal -->
-                                    <div class="space-y-4">
-                                        <!-- Card Pengirim -->
-                                        <div class="p-4 md:p-6 bg-slate-50 rounded-[24px] border border-slate-100 flex items-center gap-4 md:gap-6">
-                                            <div class="w-10 h-10 md:w-12 md:h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-slate-900 text-lg md:text-xl shrink-0">
-                                                <i class="fa-solid fa-user-tie"></i>
-                                            </div>
-                                            <div class="min-w-0 flex-1">
-                                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Nama Pengirim</p>
-                                                <p class="font-black text-slate-900 text-base md:text-lg uppercase tracking-tighter truncate"
-                                                    x-text="selectedSurat.pengirim ? selectedSurat.pengirim.username : (selectedSurat.asal_surat ?? 'Tidak Diketahui')"></p>
+                                    <div :class="activeTab === 'pdf' ? 'flex' : 'hidden md:flex'"
+                                        class="flex-1 bg-slate-100/50 relative flex flex-col min-h-0">
+
+                                        <div class="absolute inset-0 flex items-center justify-center z-0">
+                                            <div class="flex flex-col items-center gap-3">
+                                                <div class="w-10 h-10 border-[3px] border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin"></div>
+                                                <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Menyiapkan Preview...</span>
                                             </div>
                                         </div>
 
-                                        <!-- Card Perihal -->
-                                        <div class="p-4 md:p-6 bg-slate-50 rounded-[24px] border border-slate-100 flex items-center gap-4 md:gap-6">
-                                            <div class="w-10 h-10 md:w-12 md:h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-slate-900 text-lg md:text-xl shrink-0">
-                                                <i class="fa-solid fa-building"></i>
-                                            </div>
-                                            <div class="min-w-0 flex-1">
-                                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Perihal Utama</p>
-                                                <p class="font-black text-slate-900 text-base md:text-lg uppercase tracking-tighter break-words" x-text="selectedSurat.perihal"></p>
-                                            </div>
+                                        <div class="relative z-10 w-full h-full p-3 md:p-6 lg:p-8 flex flex-col flex-1">
+                                            <template x-if="selectedSurat && selectedSurat.file_surat">
+                                                <iframe :src="'/uploads/surat_sekret/' + selectedSurat.file_surat + '#toolbar=0&navpanes=0&view=FitH'"
+                                                    class="w-full h-full rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] border border-slate-200 bg-white flex-1">
+                                                </iframe>
+                                            </template>
+                                            <template x-if="!selectedSurat || !selectedSurat.file_surat">
+                                                <div class="w-full h-full flex flex-col items-center justify-center text-slate-400 gap-2 bg-white rounded-2xl border border-slate-200 flex-1">
+                                                    <i class="fa-solid fa-file-pdf text-3xl text-slate-300"></i>
+                                                    <span class="text-xs font-bold uppercase tracking-wider">Tidak ada file preview</span>
+                                                </div>
+                                            </template>
                                         </div>
-                                    </div>
 
-                                    <!-- Footer Action (Tombol Preview Dokumen di dalam body bawah) -->
-                                    <div class="pt-2">
-                                        <template x-if="selectedSurat.file_surat">
-                                            <div class="flex flex-col sm:flex-row gap-4">
-                                                <a :href="'/uploads/surat_sekret/' + selectedSurat.file_surat"
-                                                    target="_blank"
-                                                    class="flex-1 py-4 md:py-5 bg-slate-900 text-white rounded-[20px] font-black uppercase text-[11px] tracking-[0.2em] hover:bg-slate-800 active:scale-[0.98] transition-all shadow-xl flex items-center justify-center gap-3">
-                                                    <i class="fa-solid fa-up-right-from-square text-emerald-400"></i> Preview Dokumen
-                                                </a>
-                                            </div>
-                                        </template>
+                                        <div class="hidden md:flex absolute bottom-10 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur px-4 py-2 rounded-full border border-slate-200 shadow-sm z-20 items-center gap-3">
+                                            <span class="text-[8px] font-black text-slate-500 uppercase tracking-widest">Document Preview Mode</span>
+                                            <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                                        </div>
                                     </div>
 
                                 </div>

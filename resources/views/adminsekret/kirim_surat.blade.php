@@ -789,7 +789,6 @@
             x-cloak
             class="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden">
 
-            <!-- Backdrop -->
             <div
                 x-show="modalOpen"
                 x-transition:enter="transition ease-out duration-300"
@@ -801,7 +800,6 @@
                 class="absolute inset-0 bg-slate-900/80 backdrop-blur-md"
                 @click="modalOpen = false"></div>
 
-            <!-- Modal Card Container -->
             <div
                 x-show="modalOpen"
                 x-transition:enter="transition ease-out duration-500"
@@ -812,7 +810,6 @@
                 x-transition:leave-end="opacity-0 scale-90 translate-y-12"
                 class="relative w-full max-w-2xl max-h-[90vh] mx-4 bg-white rounded-[40px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden border border-white/20 flex flex-col transition-all">
 
-                <!-- HEADER -->
                 <div class="bg-slate-900 p-6 flex justify-between items-center relative overflow-hidden shrink-0">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
                     <div class="relative z-10 italic">
@@ -827,12 +824,10 @@
                     </button>
                 </div>
 
-                <!-- FORM CONTENT -->
                 <div class="overflow-y-auto custom-scrollbar flex-grow bg-white">
                     <form action="{{ route('admin.suratsekret.store') }}" method="POST" enctype="multipart/form-data" class="p-6 pb-6 space-y-6">
                         @csrf
 
-                        <!-- Input Group: No Surat & Perihal -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div class="space-y-1.5 group">
                                 <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1 group-focus-within:text-blue-600 transition-colors">Nomor Surat</label>
@@ -852,32 +847,24 @@
                             </div>
                         </div>
 
-                        <!-- Modern Checkbox Grid (FIXED & TESTED) -->
-                        <!-- Modern Checkbox Grid (FIXED & TESTED) -->
                         <div class="space-y-3">
                             <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Pilih Unit Tujuan</label>
                             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                 @foreach($adminDivisi as $divisi)
-                                <label class="relative cursor-pointer group">
-                                    <!-- 1. Input Checkbox -->
+                                <label class="relative cursor-pointer group flex h-full">
                                     <input type="checkbox" name="tujuan_id[]" value="{{ $divisi->id }}" class="peer sr-only">
 
-                                    <!-- 2. UI Container (Sejajar dengan Input agar peer-checked bekerja) -->
-                                    <div class="w-full bg-white border-2 border-slate-100 peer-checked:border-blue-600 peer-checked:bg-blue-50/50 rounded-xl p-3 flex items-center gap-2.5 transition-all duration-300 shadow-sm group-hover:border-slate-200">
+                                    <div class="w-full h-full bg-white border-2 border-slate-100 peer-checked:border-blue-600 peer-checked:bg-blue-50/50 rounded-xl p-3 flex items-start gap-2.5 transition-all duration-300 shadow-sm group-hover:border-slate-200">
 
-                                        <!-- Box Centang -->
-                                        <div class="w-4 h-4 rounded border-2 border-slate-200 bg-white flex items-center justify-center transition-all duration-200 shrink-0 overflow-hidden peer-checked:bg-blue-600 peer-checked:border-blue-600">
-                                            <!-- Gunakan inline style sementara untuk memastikan muncul jika tailwind delay -->
+                                        <div class="w-4 h-4 mt-0.5 rounded border-2 border-slate-200 bg-white flex items-center justify-center transition-all duration-200 shrink-0 overflow-hidden peer-checked:bg-blue-600 peer-checked:border-blue-600">
                                             <i class="fa-solid fa-check text-[8px] text-white opacity-0 transition-all duration-200 peer-checked:opacity-100"></i>
                                         </div>
 
-                                        <!-- Label Text -->
-                                        <span class="text-[9px] font-black text-slate-500 uppercase tracking-tight truncate peer-checked:text-blue-700">
+                                        <span class="text-[9px] font-black text-slate-500 uppercase tracking-tight whitespace-normal break-words leading-snug peer-checked:text-blue-700">
                                             {{ $divisi->nama }}
                                         </span>
                                     </div>
 
-                                    <!-- 3. Overlay Helper (Opsional: Memaksa ikon muncul dengan CSS murni jika peer Tailwind gagal) -->
                                     <style>
                                         input:checked~div i {
                                             opacity: 1 !important;
@@ -903,7 +890,6 @@
                             </div>
                         </div>
 
-                        <!-- File Upload -->
                         <div class="space-y-3" x-data="{ fileName: '', fileType: '', isDragging: false }">
                             <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic ml-1">Dokumen Lampiran</label>
                             <div class="relative">
@@ -935,7 +921,6 @@
                             </div>
                         </div>
 
-                        <!-- FOOTER BUTTONS -->
                         <div class="flex gap-3 pt-6 border-t border-slate-50 mt-6 shrink-0">
                             <button type="button" @click="modalOpen = false"
                                 class="flex-1 px-4 py-4 rounded-xl border-2 border-slate-100 text-slate-400 text-[9px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all italic shadow-sm active:scale-95">
