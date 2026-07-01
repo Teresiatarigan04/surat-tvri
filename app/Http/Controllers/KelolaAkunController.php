@@ -21,26 +21,30 @@ class KelolaAkunController extends Controller
 
     public function store(Request $request)
     {
+        // Menambahkan validasi untuk email
         $request->validate([
             'username' => 'required|unique:users,username',
-            'nama' => 'required',
+            'email'    => 'required',
+            'nama'     => 'required',
             'password' => 'required|min:6',
-            'role' => 'required'
+            'role'     => 'required'
         ]);
 
+        // Menyisipkan email saat membuat user baru
         User::create([
             'username' => $request->username,
-            'nama' => $request->nama,
+            'email'    => $request->email,
+            'nama'     => $request->nama,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role'     => $request->role,
         ]);
 
         LogActivity::create([
-            'user_id' => Auth::id(),
-            'username' => Auth::user()->username,
-            'role' => Auth::user()->role,
-            'halaman' => 'Kelola Akun',
-            'aktivitas' => 'Menambah user baru: ' . $request->username . ' sebagai ' . $request->role,
+            'user_id'    => Auth::id(),
+            'username'   => Auth::user()->username,
+            'role'       => Auth::user()->role,
+            'halaman'    => 'Kelola Akun',
+            'aktivitas'  => 'Menambah user baru: ' . $request->username . ' sebagai ' . $request->role,
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
         ]);
@@ -52,16 +56,20 @@ class KelolaAkunController extends Controller
     {
         $user = User::findOrFail($id);
         
+        // Menambahkan validasi email, ignore unique untuk id user yang sedang diupdate
         $request->validate([
             'username' => 'required|unique:users,username,' . $id,
-            'nama' => 'required',
-            'role' => 'required'
+            'email'    => 'required',
+            'nama'     => 'required',
+            'role'     => 'required'
         ]);
 
+        // Memasukkan email ke dalam array data yang akan diupdate
         $data = [
             'username' => $request->username,
-            'nama' => $request->nama,
-            'role' => $request->role,
+            'email'    => $request->email,
+            'nama'     => $request->nama,
+            'role'     => $request->role,
         ];
 
         if ($request->filled('password')) {
@@ -71,11 +79,11 @@ class KelolaAkunController extends Controller
         $user->update($data);
 
         LogActivity::create([
-            'user_id' => Auth::id(),
-            'username' => Auth::user()->username,
-            'role' => Auth::user()->role,
-            'halaman' => 'Kelola Akun',
-            'aktivitas' => 'Mengubah data user: ' . $user->username,
+            'user_id'    => Auth::id(),
+            'username'   => Auth::user()->username,
+            'role'       => Auth::user()->role,
+            'halaman'    => 'Kelola Akun',
+            'aktivitas'  => 'Mengubah data user: ' . $user->username,
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
         ]);
@@ -90,11 +98,11 @@ class KelolaAkunController extends Controller
         $user->delete();
 
         LogActivity::create([
-            'user_id' => Auth::id(),
-            'username' => Auth::user()->username,
-            'role' => Auth::user()->role,
-            'halaman' => 'Kelola Akun',
-            'aktivitas' => 'Menghapus user: ' . $username,
+            'user_id'    => Auth::id(),
+            'username'   => Auth::user()->username,
+            'role'       => Auth::user()->role,
+            'halaman'    => 'Kelola Akun',
+            'aktivitas'  => 'Menghapus user: ' . $username,
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent(),
         ]);

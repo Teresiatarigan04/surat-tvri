@@ -9,6 +9,9 @@ use App\Models\User;
 use App\Models\LogActivity;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use App\Mail\DisposisiBaruMail;
 use Exception;
 
 class DisposisiSekretController extends Controller
@@ -62,14 +65,13 @@ class DisposisiSekretController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input dengan pesan kustom Bahasa Indonesia
         $request->validate([
             'surat_id'         => 'required|exists:surat_masuk,id',
             'ke_admin'         => 'required|array|min:1',
             'ke_admin.*'       => 'exists:users,id',
             'instruksi'        => 'required|array|min:1',
             'catatan_tambahan' => 'nullable|string',
-            'file_disposisi'   => 'required|mimes:pdf,doc,docx|max:1024', // Maksimal 1MB
+            'file_disposisi'   => 'required|mimes:pdf,doc,docx|max:1024',
             'peran'            => 'required|array',
             'ketua_tim'        => 'nullable|array',
         ], [
@@ -82,6 +84,7 @@ class DisposisiSekretController extends Controller
         ]);
 
         $fileName = null;
+        $createdDisposisis = [];
 
         try {
             DB::beginTransaction();
@@ -115,25 +118,39 @@ class DisposisiSekretController extends Controller
                     $peranUser = 'pelaksana';
                 }
 
-                $statusAwal = 'pending';
-
-                Disposisi::create([
+                $disposisi = Disposisi::create([
                     'surat_id'       => $request->surat_id,
                     'dari_admin'     => Auth::id(),
                     'ke_admin'       => $adminId,
                     'catatan'        => $catatanFinal,
                     'file_disposisi' => $fileName,
-                    'status'         => $statusAwal,
+                    'status'         => 'pending',
                     'peran'          => $peranUser,
                     'ketua_tim'      => $ketuaTimUser,
                 ]);
+
+                $createdDisposisis[] = $disposisi;
             }
 
             $surat = SuratMasuk::findOrFail($request->surat_id);
             $surat->update(['status' => 'diproses']);
 
             DB::commit();
-            return back()->with('success', 'Surat berhasil didisposisikan!');
+
+            // --- PROSES EMAIL DI LUAR TRANSACTION (Supaya database tidak berat) ---
+            foreach ($createdDisposisis as $disp) {
+                $disp->load(['surat', 'dariAdmin', 'penerima']);
+
+                if ($disp->penerima && !empty($disp->penerima->email)) {
+                    try {
+                        Mail::to($disp->penerima->email)->send(new DisposisiBaruMail($disp));
+                    } catch (Exception $mailException) {
+                        Log::error('Sistem Mail Gagal Mengirim ke: ' . $disp->penerima->email . ' | Error: ' . $mailException->getMessage());
+                    }
+                }
+            }
+
+            return back()->with('success', 'Surat berhasil didisposisikan dan notifikasi email telah dikirim!');
         } catch (Exception $e) {
             DB::rollBack();
             if ($fileName && file_exists(public_path('uploads/surat_disposisi/' . $fileName))) {
@@ -164,9 +181,6 @@ class DisposisiSekretController extends Controller
             'file_disposisi' => 'nullable|mimes:pdf,doc,docx|max:1024',
             'peran'          => 'required|in:pelaksana,pemantau',
             'ketua_tim'      => 'nullable|string|max:255',
-        ], [
-            'file_disposisi.mimes' => 'Format pembaruan dokumen harus berupa PDF, DOC, atau DOCX.',
-            'file_disposisi.max'   => 'Ukuran pembaruan dokumen maksimal adalah 1 MB.',
         ]);
 
         $fileName = null;
@@ -238,7 +252,6 @@ class DisposisiSekretController extends Controller
             }
 
             $disposisi->delete();
-
             $this->logAction($request, 'Menghapus data disposisi surat No: ' . $no_surat);
 
             DB::commit();

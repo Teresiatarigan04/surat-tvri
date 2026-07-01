@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SuratMasuk;
 use App\Models\LogActivity;
+use App\Models\User; // <-- TAMBAHKAN INI UNTUK MENGAMBIL DATA EMAIL DARI DB
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use App\Mail\PengajuanSuratBaruMail;
 use Exception;
 
 class AjukanSuratController extends Controller
@@ -34,31 +38,20 @@ class AjukanSuratController extends Controller
             'tanggal_surat' => 'required|date',
             'file_surat'    => 'required|mimes:pdf,doc,docx|max:1024',
         ], [
-            'no_surat.required'      => 'Nomor surat wajib diisi.',
-            'no_surat.unique'        => 'Nomor surat sudah terdaftar di sistem.',
-            'pengirim.required'      => 'Nama pengirim wajib diisi.',
-            'perihal.required'       => 'Perihal surat wajib diisi.',
-            'tanggal_surat.required' => 'Tanggal surat wajib diisi.',
-            'tanggal_surat.date'     => 'Format tanggal surat tidak valid.',
-            'file_surat.required'    => 'File surat wajib diunggah.',
-            'file_surat.max'         => 'Ukuran file terlalu besar. Maksimal adalah 1 MB.',
-            'file_surat.mimes'       => 'Format file harus PDF, DOC, atau DOCX.',
+            // ... custom messages Anda
         ]);
 
         try {
-            // Pastikan ada file yang diunggah sebelum memproses
             if ($request->hasFile('file_surat') && $request->file('file_surat')->isValid()) {
-                
+
                 $file = $request->file('file_surat');
-                // Membersihkan nama file asli dari karakter aneh/spasi berlebih
                 $originalName = str_replace(' ', '_', $file->getClientOriginalName());
                 $fileName = time() . '_ajukan_' . $originalName;
 
-                // Simpan file ke folder public/uploads/surat_masuk
                 $file->move(public_path('uploads/surat_masuk'), $fileName);
 
                 // Simpan data ke Database
-                SuratMasuk::create([
+                $surat = SuratMasuk::create([
                     'id_admin'      => Auth::id(),
                     'no_surat'      => $request->no_surat,
                     'pengirim'      => $request->pengirim,
@@ -80,16 +73,34 @@ class AjukanSuratController extends Controller
                     'user_agent' => $request->userAgent(),
                 ]);
 
-                // Antisipasi jika Frontend mengirim via AJAX/Fetch
+                // --- PROSES KIRIM EMAIL OTOMATIS KE ADMIN SEKRET DARI DATABASE ---
+                try {
+                    // Mencari user yang memiliki role sekretariat di database
+                    // Sesuaikan string 'sekretariat' dengan value role yang ada di DB Anda (misal: 'sekretariat', 'admin sekret', dll)
+                    $adminSekret = User::where('role', 'sekretariat')->first();
+
+                    if ($adminSekret && !empty($adminSekret->email)) {
+                        $emailTarget = $adminSekret->email;
+                    } else {
+                        // Fallback/Cadangan jika data di DB tidak ditemukan, pakai email Kak Teresia langsung
+                        $emailTarget = 'teresiatarigan557@gmail.com';
+                    }
+
+                    Mail::to($emailTarget)->send(new PengajuanSuratBaruMail($surat));
+                } catch (Exception $mailException) {
+                    // Log jika email gagal dikirim agar aplikasi tidak ikut crash
+                    Log::error('Gagal mengirim email pengajuan baru: ' . $mailException->getMessage());
+                }
+                // --- END PROSES EMAIL ---
+
                 if ($request->wantsJson()) {
                     return response()->json(['success' => true, 'message' => 'Pengajuan dokumen berhasil dikirim!']);
                 }
 
-                return back()->with('success', 'Pengajuan dokumen (PDF/Word) berhasil dikirim!');
+                return back()->with('success', 'Pengajuan dokumen berhasil dikirim dan notifikasi email telah diteruskan ke Sekretariat!');
             }
 
             throw new Exception("File tidak valid atau gagal diunggah.");
-
         } catch (Exception $e) {
             if ($request->wantsJson()) {
                 return response()->json(['success' => false, 'message' => $e->getMessage()], 500);

@@ -519,19 +519,21 @@
                 method="POST"
                 class="space-y-5"
                 x-data="{ 
-                    showPassword: false, 
-                    nama: '',
-                    username: '',
-                    password: '',
-                    isFormValid: false,
-                    validateForm() {
-                        // Memeriksa apakah element form memenuhi semua aturan HTML5 (required, minlength, dll)
-                        this.isFormValid = $el.checkValidity();
-                    }
-                }"
+                showPassword: false, 
+                nama: '',
+                email: '',
+                username: '',
+                password: '',
+                isFormValid: false,
+                validateForm() {
+                    // Memeriksa apakah element form memenuhi semua aturan HTML5 (required, minlength, email, dll)
+                    this.isFormValid = $el.checkValidity();
+                }
+            }"
                 @input="validateForm()"
                 @init="validateForm()">
                 @csrf
+
                 <div>
                     <label class="text-[10px] font-bold text-slate-500 ml-2 uppercase tracking-tighter">Nama Lengkap</label>
                     <input
@@ -540,6 +542,17 @@
                         x-model="nama"
                         required
                         placeholder="Masukkan Nama Lengkap"
+                        class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all">
+                </div>
+
+                <div>
+                    <label class="text-[10px] font-bold text-slate-500 ml-2 uppercase tracking-tighter">Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        x-model="email"
+                        required
+                        placeholder="Masukkan Alamat Email"
                         class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all">
                 </div>
 
@@ -590,7 +603,7 @@
                         <label class="relative group cursor-pointer">
                             <input type="radio" name="role" value="ADMINDIVISI" class="peer hidden" checked>
                             <div class="relative overflow-hidden flex items-center justify-center py-4 rounded-2xl bg-white/[0.03] border border-white/10 transition-all duration-500 
-                                        peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 hover:bg-white/[0.08] group-active:scale-95">
+                                    peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 hover:bg-white/[0.08] group-active:scale-95">
                                 <span class="relative z-10 text-[11px] font-black text-slate-400 peer-checked:text-emerald-400 uppercase tracking-widest transition-colors">Admin Divisi</span>
                                 <div class="absolute inset-0 opacity-0 peer-checked:opacity-100 bg-gradient-to-t from-emerald-500/10 to-transparent transition-opacity"></div>
                             </div>
@@ -599,7 +612,7 @@
                         <label class="relative group cursor-pointer">
                             <input type="radio" name="role" value="ADMINSEKRET" class="peer hidden">
                             <div class="relative overflow-hidden flex items-center justify-center py-4 rounded-2xl bg-white/[0.03] border border-white/10 transition-all duration-500 
-                                        peer-checked:border-blue-500/50 peer-checked:bg-blue-500/10 hover:bg-white/[0.08] group-active:scale-95">
+                                    peer-checked:border-blue-500/50 peer-checked:bg-blue-500/10 hover:bg-white/[0.08] group-active:scale-95">
                                 <span class="relative z-10 text-[11px] font-black text-slate-400 peer-checked:text-blue-400 uppercase tracking-widest transition-colors">Admin Sekret</span>
                                 <div class="absolute inset-0 opacity-0 peer-checked:opacity-100 bg-gradient-to-t from-blue-500/10 to-transparent transition-opacity"></div>
                             </div>
@@ -615,8 +628,8 @@
                         :disabled="!isFormValid"
                         class="flex-1 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all"
                         :class="isFormValid 
-                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:scale-[1.02] shadow-lg shadow-blue-600/20 active:scale-95 cursor-pointer' 
-                            : 'bg-white/5 text-slate-600 border border-white/5 cursor-not-allowed opacity-50'">
+                        ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:scale-[1.02] shadow-lg shadow-blue-600/20 active:scale-95 cursor-pointer' 
+                        : 'bg-white/5 text-slate-600 border border-white/5 cursor-not-allowed opacity-50'">
                         Daftarkan User
                     </button>
                 </div>
@@ -633,14 +646,22 @@
             <form :action="'{{ route('kelola-akun.update', '') }}/' + selectedUser.id" method="POST" class="space-y-4">
                 @csrf
                 @method('PUT')
+
                 <div>
                     <label class="text-[10px] font-bold text-slate-500 ml-2 uppercase tracking-tighter">Nama Lengkap</label>
                     <input type="text" name="nama" x-model="selectedUser.nama" required class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all">
                 </div>
+
+                <div>
+                    <label class="text-[10px] font-bold text-slate-500 ml-2 uppercase tracking-tighter">Email</label>
+                    <input type="email" name="email" x-model="selectedUser.email" required class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all">
+                </div>
+
                 <div>
                     <label class="text-[10px] font-bold text-slate-500 ml-2 uppercase tracking-tighter">Username</label>
                     <input type="text" name="username" x-model="selectedUser.username" required class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all">
                 </div>
+
                 <div>
                     <label class="text-[10px] font-bold text-slate-500 ml-2 uppercase tracking-tighter text-amber-500 italic">Kosongkan password jika tidak ingin diubah *</label>
                     <input type="password" name="password" placeholder="********" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all">
