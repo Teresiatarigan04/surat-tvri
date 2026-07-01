@@ -20,7 +20,7 @@ class DisposisiBaruMail extends Mailable
 
     public function build()
     {
-        return $this->subject('Notifikasi Disposisi Surat Baru')
+        return $this->subject('NOTIFIKASI DISPOSISI BARU' )
                     ->view('emails.disposisi_baru');
     }
 }
